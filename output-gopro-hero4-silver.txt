@@ -1,0 +1,314 @@
+{
+    // Asset Properties
+    URL = <REDACTED>;
+
+    // Determining Usability
+    hasProtectedContent = NO;
+    playable = YES;
+    exportable = YES;
+    readable = YES;
+    composable = YES;
+
+    // Accessing Common Metadata
+    duration = 121.621333; // sec
+    providesPreciseDurationAndTiming = YES;
+
+    // Preferred Asset Attributes
+    preferredRate = 1.000000;
+    preferredTransform = CGAffineTransformIdentity;
+    preferredVolume = 1.000000;
+
+    // Media Selections
+    compatibleWithAirPlayVideo = YES;
+    creationDate = (null);
+
+    // Metadata
+    lyrics = (null);
+    metadata = [
+    {
+        identifier = "uiso/FIRM";
+        keySpace = "uiso";
+        key = 1179210317;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <4844342e 30312e30 322e3030 2e3030>; // = "HD4.01.02.00.00"
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/LENS";
+        keySpace = "uiso";
+        key = 1279610451;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <4c415434 31323132 30303231 34333131 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>; // = "LAT4121200214311"
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/CAME";
+        keySpace = "uiso";
+        key = 1128353093;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <99ff9129 90c9020c cee4b030 64b93f24>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/SETT";
+        keySpace = "uiso";
+        key = 1397052500;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <00000000 00004590 00000000>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/AMBA";
+        keySpace = "uiso";
+        key = 1095582273;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <00040003 01017800 00000002 00003aa7 000afc80 01c9c380 01c9c380 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 01090101>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/MUID";
+        keySpace = "uiso";
+        key = 1297434948;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <99ff9129 90c9020c cee4b030 64b93f24 07df270c 00070415 08340000 00000000>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/HMMT";
+        keySpace = "uiso";
+        key = 1213025620;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/BCID";
+        keySpace = "uiso";
+        key = 1111705924;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/free";
+        keySpace = "uiso";
+        key = 1718773093;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    ];
+
+    // Tracks
+    tracks = [
+    {
+        // Track Properties
+        trackID = 1;
+        mediaType = AVMediaTypeVideo; // = "vide"
+        enabled = YES;
+        playable = YES;
+        selfContained = YES;
+        totalSampleDataLength = 455686345; // bytes
+
+        // Temporal Properties
+        timeRange = {
+            start = 0.000000; // sec
+            duration = 121.604817; // sec
+        };
+        naturalTimeScale = 60000; // {1/60000 = 0.000017} sec
+        estimatedDataRate = 29978178.000000; // bps
+
+        // Track Language Properties
+        languageCode = "und";
+        extendedLanguageTag = (null);
+
+        // Visual Characteristics
+        naturalSize = {
+            width = 1920.000000;
+            height = 1080.000000;
+        };
+        preferredTransform = CGAffineTransformIdentity;
+
+        // Audible Characteristics
+        preferredVolume = 0.000000;
+
+        // Frame-Based Characteristics
+        nominalFrameRate = 59.940060; // fps (= {1001.000000 / 60000} sec/frame)
+        minFrameDuration = {1001 / 60000 = 0.016683}; // sec (= 59.940060 fps)
+        requiresFrameReordering = NO;
+
+        // Metadata
+        metadata = [
+        ];
+
+        // Format Descriptions
+        formatDescriptions = [
+        {
+            mediaType = kCMMediaType_Video; // = 'vide'
+            mediaSubType = 'avc1';
+            extensions = {
+                CVFieldCount = 1;
+                CVImageBufferChromaLocationBottomField = Left;
+                CVImageBufferChromaLocationTopField = Left;
+                CVImageBufferColorPrimaries = "ITU_R_709_2";
+                CVImageBufferTransferFunction = "ITU_R_709_2";
+                CVImageBufferYCbCrMatrix = "ITU_R_709_2";
+                CVPixelAspectRatio =     {
+                    HorizontalSpacing = 1;
+                    VerticalSpacing = 1;
+                };
+                Depth = 24;
+                FormatName = "GoPro AVC encoder";
+                FullRangeVideo = 1;
+                RevisionLevel = 0;
+                SampleDescriptionExtensionAtoms =     {
+                    avcC = <0164002a ffe10038 2764002a ac34c807 80227e5c 05b80808 0a000007 d20003a9 81d0c000 e4e00000 e4e1d779 71a18001 c9c00001 c9c3aef2 e1f08845 16000000 01000428 ee3830>;
+                };
+                SpatialQuality = 0;
+                TemporalQuality = 0;
+                VerbatimISOSampleEntry = <000000b7 61766331 00000000 00000001 00000000 00000000 00000000 00000000 07800438 00480000 00480000 00000000 00011147 6f50726f 20415643 20656e63 6f646572 00000000 00000000 00000000 00000018 ffff0000 0012636f 6c726e63 6c630001 00010001 0000004f 61766343 0164002a ffe10038 2764002a ac34c807 80227e5c 05b80808 0a000007 d20003a9 81d0c000 e4e00000 e4e1d779 71a18001 c9c00001 c9c3aef2 e1f08845 16000000 01000428 ee3830>;
+                Version = 0;
+            };
+        },
+        ];
+    },
+    {
+        // Track Properties
+        trackID = 2;
+        mediaType = AVMediaTypeAudio; // = "soun"
+        enabled = YES;
+        playable = YES;
+        selfContained = YES;
+        totalSampleDataLength = 1946367; // bytes
+
+        // Temporal Properties
+        timeRange = {
+            start = 0.000000; // sec
+            duration = 121.621333; // sec
+        };
+        naturalTimeScale = 48000; // {1/48000 = 0.000021} sec
+        estimatedDataRate = 128028.000000; // bps
+
+        // Track Language Properties
+        languageCode = "und";
+        extendedLanguageTag = (null);
+
+        // Visual Characteristics
+        naturalSize = {
+            width = 0.000000;
+            height = 0.000000;
+        };
+        preferredTransform = CGAffineTransformIdentity;
+
+        // Audible Characteristics
+        preferredVolume = 0.390625;
+
+        // Frame-Based Characteristics
+        nominalFrameRate = 46.875000; // fps (= {1024.000000 / 48000} sec/frame)
+        minFrameDuration = {0 / 0 = nan}; // sec (= nan fps)
+        requiresFrameReordering = NO;
+
+        // Metadata
+        metadata = [
+        ];
+
+        // Format Descriptions
+        formatDescriptions = [
+        {
+            mediaType = kCMMediaType_Audio; // = 'soun'
+            mediaSubType = 'aac ';
+            extensions = {
+                VerbatimISOSampleEntry = <00000056 6d703461 00000000 00000001 00000000 00000000 00020010 fffe0000 bb800000 00000032 65736473 00000000 03808022 00000004 80801640 15002000 0001f400 0001f400 05808005 11900000 00068080 0102>;
+            };
+        },
+        ];
+    },
+    {
+        // Track Properties
+        trackID = 3;
+        mediaType = AVMediaTypeTimecode; // = "tmcd"
+        enabled = YES;
+        playable = YES;
+        selfContained = YES;
+        totalSampleDataLength = 4; // bytes
+
+        // Temporal Properties
+        timeRange = {
+            start = 0.000000; // sec
+            duration = 121.604817; // sec
+        };
+        naturalTimeScale = 60000; // {1/60000 = 0.000017} sec
+        estimatedDataRate = 0.263147; // bps
+
+        // Track Language Properties
+        languageCode = "und";
+        extendedLanguageTag = (null);
+
+        // Visual Characteristics
+        naturalSize = {
+            width = 1920.000000;
+            height = 16.000000;
+        };
+        preferredTransform = CGAffineTransformIdentity;
+
+        // Audible Characteristics
+        preferredVolume = 0.000000;
+
+        // Frame-Based Characteristics
+        nominalFrameRate = 0.008223; // fps (= {7296289.000000 / 60000} sec/frame)
+        minFrameDuration = {0 / 0 = nan}; // sec (= nan fps)
+        requiresFrameReordering = NO;
+
+        // Metadata
+        metadata = [
+        ];
+
+        // Format Descriptions
+        formatDescriptions = [
+        {
+            mediaType = kCMMediaType_TimeCode; // = 'tmcd'
+            mediaSubType = 'tmcd';
+            extensions = {
+                VerbatimSampleDescription = <00000022 746d6364 00000000 00000001 00000000 00000002 0000ea60 000003e9 3c00>;
+            };
+        },
+        ];
+    },
+    ];
+}
