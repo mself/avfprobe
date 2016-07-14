@@ -1,0 +1,115 @@
+{
+    // Asset Properties
+    URL = <REDACTED>;
+
+    // Determining Usability
+    hasProtectedContent = NO;
+    playable = YES;
+    exportable = YES;
+    readable = YES;
+    composable = YES;
+
+    // Accessing Common Metadata
+    duration = 10.010000; // sec
+    providesPreciseDurationAndTiming = YES;
+
+    // Preferred Asset Attributes
+    preferredRate = 1.000000;
+    preferredTransform = CGAffineTransformIdentity;
+    preferredVolume = 1.000000;
+
+    // Media Selections
+    compatibleWithAirPlayVideo = YES;
+    creationDate = (null);
+
+    // Tracks
+    tracks = [
+    {
+        // Track Properties
+        trackID = 1;
+        mediaType = AVMediaTypeVideo; // = "vide"
+        enabled = YES;
+        playable = YES;
+        selfContained = YES;
+        totalSampleDataLength = 52376660; // bytes
+
+        // Temporal Properties
+        timeRange = {
+            start = 0.000000; // sec
+            duration = 10.010000; // sec
+        };
+        naturalTimeScale = 60000; // {1/60000 = 0.000017} sec
+        estimatedDataRate = 41859468.000000; // bps
+
+        // Track Language Properties
+        languageCode = "eng";
+        extendedLanguageTag = (null);
+
+        // Visual Characteristics
+        naturalSize = {
+            width = 1920.000000;
+            height = 1080.000000;
+        };
+        preferredTransform = CGAffineTransformIdentity;
+
+        // Audible Characteristics
+        preferredVolume = 0.000000;
+
+        // Frame-Based Characteristics
+        nominalFrameRate = 59.840160; // fps (= {1002.671082 / 60000} sec/frame)
+        minFrameDuration = {1001 / 60000 = 0.016683}; // sec (= 59.940060 fps)
+        requiresFrameReordering = YES;
+
+        // Metadata
+        metadata = [
+        ];
+
+        // Format Descriptions
+        formatDescriptions = [
+        {
+            mediaType = kCMMediaType_Video; // = 'vide'
+            mediaSubType = 'avc1';
+            extensions = {
+                CVFieldCount = 1;
+                CVImageBufferChromaLocationBottomField = Left;
+                CVImageBufferChromaLocationTopField = Left;
+                CVPixelAspectRatio =     {
+                    HorizontalSpacing = 1;
+                    VerticalSpacing = 1;
+                };
+                Depth = 24;
+                FormatName = "'avc1'";
+                FullRangeVideo = 1;
+                RevisionLevel = 0;
+                SampleDescriptionExtensionAtoms =     {
+                    avcC = <0164002a ffe1001a 6764002a acd94078 0227e5c0 5b200000 7d20003a 9801e306 32c00100 0668eae0 8cb22c>;
+                };
+                SpatialQuality = 0;
+                TemporalQuality = 0;
+                VerbatimISOSampleEntry = <00000089 61766331 00000000 00000001 00000000 00000000 00000000 00000000 07800438 00480000 00480000 00000000 00010000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000018 ffff0000 00336176 63430164 002affe1 001a6764 002aacd9 40780227 e5c05b20 00007d20 003a9801 e30632c0 01000668 eae08cb2 2c>;
+                Version = 0;
+            };
+        },
+        ];
+    },
+    ];
+
+    // Metadata
+    metadata = [
+    {
+        identifier = "itsk/%A9too";
+        keySpace = "itsk";
+        key = -1451987089;
+        commonKey = "software";
+        dataType = "com.apple.metadata.datatype.UTF-8";
+        value = "Lavf56.36.100";
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    ];
+
+    // Lyrics
+    lyrics = (null);
+}

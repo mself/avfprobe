@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		34E62AAA1D373243001E545C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E62AA91D373243001E545C /* main.m */; };
-		34E62AB91D377B0D001E545C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 34E62AB81D377B0D001E545C /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,6 +29,7 @@
 		34E62AB61D377B0D001E545C /* output-gopro-hero4-silver.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "output-gopro-hero4-silver.txt"; sourceTree = "<group>"; };
 		34E62AB71D377B0D001E545C /* output-iphone-5s.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "output-iphone-5s.txt"; sourceTree = "<group>"; };
 		34E62AB81D377B0D001E545C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		34E62ABA1D37F7FD001E545C /* output-ffmpeg.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "output-ffmpeg.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +50,7 @@
 				34E62AA71D373243001E545C /* Products */,
 				34E62AB71D377B0D001E545C /* output-iphone-5s.txt */,
 				34E62AB61D377B0D001E545C /* output-gopro-hero4-silver.txt */,
+				34E62ABA1D37F7FD001E545C /* output-ffmpeg.txt */,
 				34E62AB81D377B0D001E545C /* README.md */,
 				34E62AB51D377B0D001E545C /* LICENSE */,
 			);
@@ -127,7 +128,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34E62AB91D377B0D001E545C /* README.md in Sources */,
 				34E62AAA1D373243001E545C /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

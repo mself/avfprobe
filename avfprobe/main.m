@@ -110,17 +110,6 @@ static void printAsset(AVURLAsset *asset)
     
     printf("\n");
     
-    // Metadata
-    printf("    // Metadata\n");
-    printf("    lyrics = %s;\n", asset.lyrics.q);
-    printf("    metadata = [\n");
-    for (AVMetadataItem *item in asset.metadata) {
-        printMetadata(item, "    ");
-    }
-    printf("    ];\n");
-    
-    printf("\n");
-    
     // Tracks
     printf("    // Tracks\n");
     printf("    tracks = [\n");
@@ -131,6 +120,22 @@ static void printAsset(AVURLAsset *asset)
 
     // Track Groups
     // (ignore for now)
+    
+    printf("\n");
+    
+    // Metadata
+    printf("    // Metadata\n");
+    printf("    metadata = [\n");
+    for (AVMetadataItem *item in asset.metadata) {
+        printMetadata(item, "    ");
+    }
+    printf("    ];\n");
+    
+    printf("\n");
+    
+    // Lyrics
+    printf("    // Lyrics\n");
+    printf("    lyrics = %s;\n", asset.lyrics.q);
     
     printf("}\n");
 }
@@ -238,7 +243,11 @@ static void printMetadata(AVMetadataItem *item, const char *indent)
     
     // Accessing Values
     printf("%s    dataType = %s;\n", indent, item.dataType.q);
-    printf("%s    value = %s;", indent, item.value.description.p);
+    if (item.stringValue) {
+        printf("%s    value = %s;", indent, item.stringValue.q);
+    } else {
+        printf("%s    value = %s;", indent, item.value.description.p);
+    }
     if (item.dataValue) {
         // See if we can interpret the raw data as a UTF8 string.
         NSString *dataString = [[NSString alloc] initWithData:item.dataValue encoding:NSUTF8StringEncoding];

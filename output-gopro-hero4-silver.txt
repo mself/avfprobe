@@ -22,119 +22,6 @@
     compatibleWithAirPlayVideo = YES;
     creationDate = (null);
 
-    // Metadata
-    lyrics = (null);
-    metadata = [
-    {
-        identifier = "uiso/FIRM";
-        keySpace = "uiso";
-        key = 1179210317;
-        commonKey = (null);
-        dataType = "com.apple.metadata.datatype.raw-data";
-        value = <4844342e 30312e30 322e3030 2e3030>; // = "HD4.01.02.00.00"
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "uiso/LENS";
-        keySpace = "uiso";
-        key = 1279610451;
-        commonKey = (null);
-        dataType = "com.apple.metadata.datatype.raw-data";
-        value = <4c415434 31323132 30303231 34333131 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>; // = "LAT4121200214311"
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "uiso/CAME";
-        keySpace = "uiso";
-        key = 1128353093;
-        commonKey = (null);
-        dataType = "com.apple.metadata.datatype.raw-data";
-        value = <99ff9129 90c9020c cee4b030 64b93f24>;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "uiso/SETT";
-        keySpace = "uiso";
-        key = 1397052500;
-        commonKey = (null);
-        dataType = "com.apple.metadata.datatype.raw-data";
-        value = <00000000 00004590 00000000>;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "uiso/AMBA";
-        keySpace = "uiso";
-        key = 1095582273;
-        commonKey = (null);
-        dataType = "com.apple.metadata.datatype.raw-data";
-        value = <00040003 01017800 00000002 00003aa7 000afc80 01c9c380 01c9c380 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 01090101>;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "uiso/MUID";
-        keySpace = "uiso";
-        key = 1297434948;
-        commonKey = (null);
-        dataType = "com.apple.metadata.datatype.raw-data";
-        value = <99ff9129 90c9020c cee4b030 64b93f24 07df270c 00070415 08340000 00000000>;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "uiso/HMMT";
-        keySpace = "uiso";
-        key = 1213025620;
-        commonKey = (null);
-        dataType = "com.apple.metadata.datatype.raw-data";
-        value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "uiso/BCID";
-        keySpace = "uiso";
-        key = 1111705924;
-        commonKey = (null);
-        dataType = "com.apple.metadata.datatype.raw-data";
-        value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "uiso/free";
-        keySpace = "uiso";
-        key = 1718773093;
-        commonKey = (null);
-        dataType = "com.apple.metadata.datatype.raw-data";
-        value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    ];
-
     // Tracks
     tracks = [
     {
@@ -311,4 +198,119 @@
         ];
     },
     ];
+
+    // Metadata
+    metadata = [
+    {
+        identifier = "uiso/FIRM";
+        keySpace = "uiso";
+        key = 1179210317;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <4844342e 30312e30 322e3030 2e3030>; // = "HD4.01.02.00.00"
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/LENS";
+        keySpace = "uiso";
+        key = 1279610451;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <4c415434 31323132 30303231 34333131 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>; // = "LAT4121200214311"
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/CAME";
+        keySpace = "uiso";
+        key = 1128353093;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <99ff9129 90c9020c cee4b030 64b93f24>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/SETT";
+        keySpace = "uiso";
+        key = 1397052500;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <00000000 00004590 00000000>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/AMBA";
+        keySpace = "uiso";
+        key = 1095582273;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <00040003 01017800 00000002 00003aa7 000afc80 01c9c380 01c9c380 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 01090101>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/MUID";
+        keySpace = "uiso";
+        key = 1297434948;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <99ff9129 90c9020c cee4b030 64b93f24 07df270c 00070415 08340000 00000000>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/HMMT";
+        keySpace = "uiso";
+        key = 1213025620;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/BCID";
+        keySpace = "uiso";
+        key = 1111705924;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "uiso/free";
+        keySpace = "uiso";
+        key = 1718773093;
+        commonKey = (null);
+        dataType = "com.apple.metadata.datatype.raw-data";
+        value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    ];
+
+    // Lyrics
+    lyrics = (null);
 }

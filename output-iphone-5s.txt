@@ -22,71 +22,6 @@
     compatibleWithAirPlayVideo = YES;
     creationDate = (null);
 
-    // Metadata
-    lyrics = (null);
-    metadata = [
-    {
-        identifier = "mdta/com.apple.quicktime.location.ISO6709";
-        keySpace = "mdta";
-        key = com.apple.quicktime.location.ISO6709;
-        commonKey = "location";
-        dataType = "com.apple.metadata.datatype.UTF-8";
-        value = <REDACTED>;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "mdta/com.apple.quicktime.make";
-        keySpace = "mdta";
-        key = com.apple.quicktime.make;
-        commonKey = "make";
-        dataType = "com.apple.metadata.datatype.UTF-8";
-        value = Apple;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "mdta/com.apple.quicktime.model";
-        keySpace = "mdta";
-        key = com.apple.quicktime.model;
-        commonKey = "model";
-        dataType = "com.apple.metadata.datatype.UTF-8";
-        value = iPhone 5s;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "mdta/com.apple.quicktime.software";
-        keySpace = "mdta";
-        key = com.apple.quicktime.software;
-        commonKey = "software";
-        dataType = "com.apple.metadata.datatype.UTF-8";
-        value = 9.3.1;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    {
-        identifier = "mdta/com.apple.quicktime.creationdate";
-        keySpace = "mdta";
-        key = com.apple.quicktime.creationdate;
-        commonKey = "creationDate";
-        dataType = "com.apple.metadata.datatype.UTF-8";
-        value = 2016-04-12T20:40:45-0700;
-        time = {0/0 = nan}; // sec
-        duration = {0/0 = nan}; // sec
-        locale = (null);
-        extendedLanguageTag = (null);
-    },
-    ];
-
     // Tracks
     tracks = [
     {
@@ -383,4 +318,71 @@
         ];
     },
     ];
+
+    // Metadata
+    metadata = [
+    {
+        identifier = "mdta/com.apple.quicktime.location.ISO6709";
+        keySpace = "mdta";
+        key = com.apple.quicktime.location.ISO6709;
+        commonKey = "location";
+        dataType = "com.apple.metadata.datatype.UTF-8";
+        value = <REDACTED>;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "mdta/com.apple.quicktime.make";
+        keySpace = "mdta";
+        key = com.apple.quicktime.make;
+        commonKey = "make";
+        dataType = "com.apple.metadata.datatype.UTF-8";
+        value = "Apple";
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "mdta/com.apple.quicktime.model";
+        keySpace = "mdta";
+        key = com.apple.quicktime.model;
+        commonKey = "model";
+        dataType = "com.apple.metadata.datatype.UTF-8";
+        value = "iPhone 5s";
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "mdta/com.apple.quicktime.software";
+        keySpace = "mdta";
+        key = com.apple.quicktime.software;
+        commonKey = "software";
+        dataType = "com.apple.metadata.datatype.UTF-8";
+        value = "9.3.1";
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    {
+        identifier = "mdta/com.apple.quicktime.creationdate";
+        keySpace = "mdta";
+        key = com.apple.quicktime.creationdate;
+        commonKey = "creationDate";
+        dataType = "com.apple.metadata.datatype.UTF-8";
+        value = "2016-04-12T20:40:45-0700";
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    },
+    ];
+
+    // Lyrics
+    lyrics = (null);
 }
