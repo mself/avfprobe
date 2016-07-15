@@ -11,13 +11,13 @@ It loads each file as an AVAsset and decodes and displays information on all of 
 * format descriptions (`CMFormatDescription`)
 * media types (`CMMediaType`)
 
-Usage Example
--------------
+### Usage
+---------
 
 ```$ avfprobe file ...```
 
-Sample Output
--------------
+### Sample Output
+-----------------
 
 Sample output is included for videos from:
 
@@ -27,15 +27,42 @@ Sample output is included for videos from:
 
 Please submit pull requests with sample output from other devices.
 
-Notes
------
+### Examples
+------------
 
-`avfprobe` can help troublshoot issues, such as this one in the sample output from `ffmpeg`.
+##### iPhone:
 
-Note that the `nominalFrameRate` for the video track is 59.84 fps, whereas the reciprocal of
-`minFrameDuration` is 59.94 fps.  The `nominalFrameRate` is not commensurate with the track's `naturalTimeScale`.
-The `nominalFrameRate` corresponds to a frame interval of `{3008/180000}` whereas `minFrameDuration`
- corresponds to`{3003/180000}`.
+The iPhone sample includes an example of a geographic location in the metadata:
+
+```
+identifier = "mdta/com.apple.quicktime.location.ISO6709";
+keySpace = "mdta";
+key = com.apple.quicktime.location.ISO6709;
+commonKey = "location";
+dataType = "com.apple.metadata.datatype.UTF-8";
+value = "+37.4866-122.2296+005.952/";
+```
+
+You can look up "+37.4866-122.2296+005.952/" on [Google Maps](https://www.google.com/maps/place/%2B37.4866-122.2296) to see where this video was shot.
+
+##### GoPro:
+
+The GoPro sample includes an example of the camera firmware version in the metadata:
+
+```
+identifier = "uiso/FIRM";
+keySpace = "uiso";
+key = 1179210317;
+commonKey = (null);
+dataType = "com.apple.metadata.datatype.raw-data";
+value = <4844342e 30312e30 322e3030 2e3030>; // = "HD4.01.02.00.00"
+```
+
+You can look up "HD4.01.02.00.00" on [GoPro's website](https://gopro.com/support/articles/firmware-release-information) to see that this is a "HERO4 Silver Edition Camera".
+
+##### ffmpeg:
+
+`avfprobe` can also help troublshoot issues, such as this one in the sample output from `ffmpeg`.
 
 ```
 // Temporal Properties
@@ -45,6 +72,11 @@ naturalTimeScale = 60000; // {1/60000 = 0.000017} sec
 nominalFrameRate = 59.840160; // fps (= {1002.671082 / 60000} sec/frame)
 minFrameDuration = {1001 / 60000 = 0.016683}; // sec (= 59.940060 fps)
 ```
+
+Note that the `nominalFrameRate` for the video track is 59.84 fps, whereas the reciprocal of
+`minFrameDuration` is 59.94 fps.  The `nominalFrameRate` is not commensurate with the track's `naturalTimeScale`.
+The `nominalFrameRate` corresponds to a frame interval of `{3008/180000}` whereas `minFrameDuration`
+ corresponds to`{3003/180000}`.
 
 The presentation time stamps of the frames in the track are actually multiples of `minFrameDuration`
 (`{1001/60000}`, `{2002/60000}`, `{3003/60000}`, ...).

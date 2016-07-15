@@ -327,7 +327,7 @@
         key = com.apple.quicktime.location.ISO6709;
         commonKey = "location";
         dataType = "com.apple.metadata.datatype.UTF-8";
-        value = <REDACTED>;
+        value = "+37.4866-122.2296+005.952/";
         time = {0/0 = nan}; // sec
         duration = {0/0 = nan}; // sec
         locale = (null);
