@@ -155,7 +155,8 @@ static void printTrack(AVAssetTrack *track)
     printf("        enabled = %s;\n", track.enabled ? "YES" : "NO");
     printf("        playable = %s;\n", track.playable ? "YES" : "NO");
     printf("        selfContained = %s;\n", track.selfContained ? "YES" : "NO");
-    printf("        totalSampleDataLength = %lld; // bytes\n", track.totalSampleDataLength);
+    printf("        totalSampleDataLength = %lld; // bytes (= %f bps)\n", track.totalSampleDataLength,
+           8 * track.totalSampleDataLength / CMTimeGetSeconds(track.timeRange.duration));
     
     printf("\n");
     
