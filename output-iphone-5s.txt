@@ -38,7 +38,7 @@
         {
             // Track Properties
             trackID = 1;
-            mediaType = AVMediaTypeVideo; // = "vide"
+            mediaType = AVMediaTypeVideo; // "vide"
             enabled = YES;
             playable = YES;
             selfContained = YES;
@@ -75,8 +75,8 @@
             formatDescriptions = [
                 {
                     // Media-type-Agnostic Functions
-                    mediaType = kCMMediaType_Video; // = 'vide'
-                    mediaSubType = 'avc1';
+                    mediaType = kCMMediaType_Video; // 'vide'
+                    mediaSubType = kCMVideoCodecType_H264; // 'avc1'
 
                     // Audio-Specific Functions
                     videoDimensions = {
@@ -113,7 +113,7 @@
         {
             // Track Properties
             trackID = 2;
-            mediaType = AVMediaTypeAudio; // = "soun"
+            mediaType = AVMediaTypeAudio; // "soun"
             enabled = YES;
             playable = YES;
             selfContained = YES;
@@ -150,13 +150,13 @@
             formatDescriptions = [
                 {
                     // Media-type-Agnostic Functions
-                    mediaType = kCMMediaType_Audio; // = 'soun'
-                    mediaSubType = 'aac ';
+                    mediaType = kCMMediaType_Audio; // 'soun'
+                    mediaSubType = kAudioFormatMPEG4AAC; // 'aac '
 
                     // Audio-Specific Functions
                     AudioStreamBasicDescription = {
                         mSampleRate = 44100.000000;
-                        mFormatID = 'aac ';
+                        mFormatID = kAudioFormatMPEG4AAC; // 'aac '
                         mFormatFlags = 0x0;
                         mBytesPerPacket = 0;
                         mFramesPerPacket = 1024;
@@ -168,8 +168,7 @@
                     AudioChannelLayout = {
                         mChannelLayoutTag = kAudioChannelLayoutTag_Mono;
                         mChannelBitmap = 0x00000000;
-                        mChannelDescriptions = [
-                        ];
+                        mChannelDescriptions = [];
                     };
 
                     // Extensions
@@ -185,7 +184,7 @@
         {
             // Track Properties
             trackID = 3;
-            mediaType = AVMediaTypeMetadata; // = "meta"
+            mediaType = AVMediaTypeMetadata; // "meta"
             enabled = YES;
             playable = YES;
             selfContained = YES;
@@ -222,8 +221,8 @@
             formatDescriptions = [
                 {
                     // Media-type-Agnostic Functions
-                    mediaType = kCMMediaType_Metadata; // = 'meta'
-                    mediaSubType = 'mebx';
+                    mediaType = kCMMediaType_Metadata; // 'meta'
+                    mediaSubType = kCMMetadataFormatType_Boxed; // 'mebx'
 
                     // Metadata-Specific Functions
 
@@ -302,7 +301,7 @@
         {
             // Track Properties
             trackID = 4;
-            mediaType = AVMediaTypeMetadata; // = "meta"
+            mediaType = AVMediaTypeMetadata; // "meta"
             enabled = YES;
             playable = YES;
             selfContained = YES;
@@ -339,8 +338,8 @@
             formatDescriptions = [
                 {
                     // Media-type-Agnostic Functions
-                    mediaType = kCMMediaType_Metadata; // = 'meta'
-                    mediaSubType = 'mebx';
+                    mediaType = kCMMediaType_Metadata; // 'meta'
+                    mediaSubType = kCMMetadataFormatType_Boxed; // 'mebx'
 
                     // Metadata-Specific Functions
 

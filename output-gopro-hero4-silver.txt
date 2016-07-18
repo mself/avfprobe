@@ -38,7 +38,7 @@
         {
             // Track Properties
             trackID = 1;
-            mediaType = AVMediaTypeVideo; // = "vide"
+            mediaType = AVMediaTypeVideo; // "vide"
             enabled = YES;
             playable = YES;
             selfContained = YES;
@@ -75,8 +75,8 @@
             formatDescriptions = [
                 {
                     // Media-type-Agnostic Functions
-                    mediaType = kCMMediaType_Video; // = 'vide'
-                    mediaSubType = 'avc1';
+                    mediaType = kCMMediaType_Video; // 'vide'
+                    mediaSubType = kCMVideoCodecType_H264; // 'avc1'
 
                     // Audio-Specific Functions
                     videoDimensions = {
@@ -117,7 +117,7 @@
         {
             // Track Properties
             trackID = 2;
-            mediaType = AVMediaTypeAudio; // = "soun"
+            mediaType = AVMediaTypeAudio; // "soun"
             enabled = YES;
             playable = YES;
             selfContained = YES;
@@ -154,13 +154,13 @@
             formatDescriptions = [
                 {
                     // Media-type-Agnostic Functions
-                    mediaType = kCMMediaType_Audio; // = 'soun'
-                    mediaSubType = 'aac ';
+                    mediaType = kCMMediaType_Audio; // 'soun'
+                    mediaSubType = kAudioFormatMPEG4AAC; // 'aac '
 
                     // Audio-Specific Functions
                     AudioStreamBasicDescription = {
                         mSampleRate = 48000.000000;
-                        mFormatID = 'aac ';
+                        mFormatID = kAudioFormatMPEG4AAC; // 'aac '
                         mFormatFlags = 0x0;
                         mBytesPerPacket = 0;
                         mFramesPerPacket = 1024;
@@ -172,8 +172,7 @@
                     AudioChannelLayout = {
                         mChannelLayoutTag = kAudioChannelLayoutTag_Stereo;
                         mChannelBitmap = 0x00000000;
-                        mChannelDescriptions = [
-                        ];
+                        mChannelDescriptions = [];
                     };
 
                     // Extensions
@@ -189,7 +188,7 @@
         {
             // Track Properties
             trackID = 3;
-            mediaType = AVMediaTypeTimecode; // = "tmcd"
+            mediaType = AVMediaTypeTimecode; // "tmcd"
             enabled = YES;
             playable = YES;
             selfContained = YES;
@@ -226,8 +225,8 @@
             formatDescriptions = [
                 {
                     // Media-type-Agnostic Functions
-                    mediaType = kCMMediaType_TimeCode; // = 'tmcd'
-                    mediaSubType = 'tmcd';
+                    mediaType = kCMMediaType_TimeCode; // 'tmcd'
+                    mediaSubType = kCMMediaType_TimeCode; // 'tmcd'
 
                     // TimeCode-Specific Functions
                     frameDuration = {1001/60000 = 0.016683};

@@ -15,11 +15,11 @@ static void printAsset(int indent, AVURLAsset *asset);
 static void printAssetTrack(int indent, AVAssetTrack *track);
 static void printMetadataItem(int indent, AVMetadataItem *item);
 static void printFormatDescription(int indent, CMFormatDescriptionRef formatDescription);
-static void printAVMediaType(NSString *mediaType);
-static void printCMMediaType(CMMediaType mediaType);
-static void printTransform(int indent, CGAffineTransform transform);
 static void printObject(int indent, NSObject *value);
 static void printWithIndent(int indent, const char *format, ...);
+static void printTransform(int indent, CGAffineTransform transform);
+static void printAVMediaType(NSString *mediaType);
+static void printFourCharCode(CMMediaType mediaType);
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -149,7 +149,7 @@ static void printAssetTrack(int indent, AVAssetTrack *track)
     
     printWithIndent(indent, "mediaType = ");
     printAVMediaType(track.mediaType);
-    printf("; // = %s\n", track.mediaType.q);
+    printf("; // %s\n", track.mediaType.q);
     
     printWithIndent(indent, "enabled = %s;\n", track.enabled ? "YES" : "NO");
     printWithIndent(indent, "playable = %s;\n", track.playable ? "YES" : "NO");
@@ -262,31 +262,34 @@ static void printFormatDescription(int indent, CMFormatDescriptionRef formatDesc
     
     // Media-type-Agnostic Functions
     printWithIndent(indent, "// Media-type-Agnostic Functions\n");
-    CMMediaType mediaType = CMFormatDescriptionGetMediaType(formatDescription);
+    FourCharCode mediaType = CMFormatDescriptionGetMediaType(formatDescription);
     printWithIndent(indent, "mediaType = ");
-    printCMMediaType(mediaType);
-    printf("; // = %s\n", NSFileTypeForHFSTypeCode(mediaType).p);
+    printFourCharCode(mediaType);
     
     FourCharCode mediaSubType = CMFormatDescriptionGetMediaSubType(formatDescription);
-    printWithIndent(indent, "mediaSubType = %s;\n", NSFileTypeForHFSTypeCode(mediaSubType).p);
+    printWithIndent(indent, "mediaSubType = ");
+    printFourCharCode(mediaSubType);
     
     printf("\n");
     
     if (mediaType == kCMMediaType_Audio) {
         // Audio-Specific Functions
         printWithIndent(indent, "// Audio-Specific Functions\n");
-        const AudioStreamBasicDescription *desc = CMAudioFormatDescriptionGetStreamBasicDescription(formatDescription);
-        if (desc) {
+        const AudioStreamBasicDescription *asbd = CMAudioFormatDescriptionGetStreamBasicDescription(formatDescription);
+        if (asbd) {
             printWithIndent(indent, "AudioStreamBasicDescription = {\n");
-            printWithIndent(indent + 1, "mSampleRate = %f;\n", desc->mSampleRate);
-            printWithIndent(indent + 1, "mFormatID = %s;\n", NSFileTypeForHFSTypeCode(desc->mFormatID).p);
-            printWithIndent(indent + 1, "mFormatFlags = 0x%x;\n", desc->mFormatFlags);
-            printWithIndent(indent + 1, "mBytesPerPacket = %d;\n", desc->mBytesPerPacket);
-            printWithIndent(indent + 1, "mFramesPerPacket = %d;\n", desc->mFramesPerPacket);
-            printWithIndent(indent + 1, "mBytesPerFrame = %d;\n", desc->mBytesPerFrame);
-            printWithIndent(indent + 1, "mChannelsPerFrame = %d;\n", desc->mChannelsPerFrame);
-            printWithIndent(indent + 1, "mBitsPerChannel = %d;\n", desc->mBitsPerChannel);
-            // printWithIndent(indent + 1, "mReserved = %d;\n", desc->mReserved);
+            printWithIndent(indent + 1, "mSampleRate = %f;\n", asbd->mSampleRate);
+            
+            printWithIndent(indent + 1, "mFormatID = ");
+            printFourCharCode(asbd->mFormatID);
+            
+            printWithIndent(indent + 1, "mFormatFlags = 0x%x;\n", asbd->mFormatFlags);
+            printWithIndent(indent + 1, "mBytesPerPacket = %d;\n", asbd->mBytesPerPacket);
+            printWithIndent(indent + 1, "mFramesPerPacket = %d;\n", asbd->mFramesPerPacket);
+            printWithIndent(indent + 1, "mBytesPerFrame = %d;\n", asbd->mBytesPerFrame);
+            printWithIndent(indent + 1, "mChannelsPerFrame = %d;\n", asbd->mChannelsPerFrame);
+            printWithIndent(indent + 1, "mBitsPerChannel = %d;\n", asbd->mBitsPerChannel);
+            // printWithIndent(indent + 1, "mReserved = %d;\n", asbd->mReserved);
             printWithIndent(indent, "};\n");
         }
         
@@ -311,23 +314,29 @@ static void printFormatDescription(int indent, CMFormatDescriptionRef formatDesc
             printf(";\n");
             
             printWithIndent(indent, "mChannelBitmap = 0x%08x;\n", layout->mChannelBitmap);
-            // printWithIndent(indent, "mNumberChannelDescriptions = %d;\n", layout->mNumberChannelDescriptions);
-            printWithIndent(indent, "mChannelDescriptions = [\n");
-            indent++;
             
-            for (int i = 0; i < layout->mNumberChannelDescriptions; i++) {
-                printWithIndent(indent, "{\n");
+            // printWithIndent(indent, "mNumberChannelDescriptions = %d;\n", layout->mNumberChannelDescriptions);
+            if (layout->mNumberChannelDescriptions == 0) {
+                printWithIndent(indent, "mChannelDescriptions = [];\n");
+            } else {
+                printWithIndent(indent, "mChannelDescriptions = [\n");
                 indent++;
-                printWithIndent(indent, "mChannelLabel = %d;\n", layout->mChannelDescriptions[i].mChannelLabel);
-                printWithIndent(indent, "mChannelFlags = %x;\n", layout->mChannelDescriptions[i].mChannelFlags);
-                printWithIndent(indent, "mCoordinates = (%f, %f, %f);\n", layout->mChannelDescriptions[i].mCoordinates[0],
-                                layout->mChannelDescriptions[i].mCoordinates[1],
-                                layout->mChannelDescriptions[i].mCoordinates[2]);
+                
+                for (int i = 0; i < layout->mNumberChannelDescriptions; i++) {
+                    printWithIndent(indent, "{\n");
+                    indent++;
+                    printWithIndent(indent, "mChannelLabel = %d;\n", layout->mChannelDescriptions[i].mChannelLabel);
+                    printWithIndent(indent, "mChannelFlags = %x;\n", layout->mChannelDescriptions[i].mChannelFlags);
+                    printWithIndent(indent, "mCoordinates = (%f, %f, %f);\n", layout->mChannelDescriptions[i].mCoordinates[0],
+                                    layout->mChannelDescriptions[i].mCoordinates[1],
+                                    layout->mChannelDescriptions[i].mCoordinates[2]);
+                    indent--;
+                    printWithIndent(indent, "};\n");
+                }
                 indent--;
-                printWithIndent(indent, "};\n");
+                printWithIndent(indent, "];\n");
             }
-            indent--;
-            printWithIndent(indent, "];\n");
+            
             indent--;
             printWithIndent(indent, "};\n");
         }
@@ -398,64 +407,6 @@ static void printFormatDescription(int indent, CMFormatDescriptionRef formatDesc
     printWithIndent(indent, "}");
 }
 
-static void printAVMediaType(NSString *mediaType)
-{
-    if ([mediaType isEqualToString:AVMediaTypeVideo]) {
-        printf("AVMediaTypeVideo");
-    } else if ([mediaType isEqualToString:AVMediaTypeAudio]) {
-        printf("AVMediaTypeAudio");
-    } else if ([mediaType isEqualToString:AVMediaTypeText]) {
-        printf("AVMediaTypeText");
-    } else if ([mediaType isEqualToString:AVMediaTypeClosedCaption]) {
-        printf("AVMediaTypeClosedCaption");
-    } else if ([mediaType isEqualToString:AVMediaTypeSubtitle]) {
-        printf("AVMediaTypeSubtitle");
-    } else if ([mediaType isEqualToString:AVMediaTypeTimecode]) {
-        printf("AVMediaTypeTimecode");
-    } else if ([mediaType isEqualToString:AVMediaTypeMetadata]) {
-        printf("AVMediaTypeMetadata");
-    } else if ([mediaType isEqualToString:AVMediaTypeMuxed]) {
-        printf("AVMediaTypeMuxed");
-    } else {
-        printf("%s", mediaType.q);
-    }
-}
-
-static void printCMMediaType(CMMediaType mediaType)
-{
-    if (mediaType == kCMMediaType_Video) {
-        printf("kCMMediaType_Video");
-    } else if (mediaType == kCMMediaType_Audio) {
-        printf("kCMMediaType_Audio");
-    } else if (mediaType == kCMMediaType_Muxed) {
-        printf("kCMMediaType_Muxed");
-    } else if (mediaType == kCMMediaType_Text) {
-        printf("kCMMediaType_Text");
-    } else if (mediaType == kCMMediaType_ClosedCaption) {
-        printf("kCMMediaType_ClosedCaption");
-    } else if (mediaType == kCMMediaType_Subtitle) {
-        printf("kCMMediaType_Subtitle");
-    } else if (mediaType == kCMMediaType_TimeCode) {
-        printf("kCMMediaType_TimeCode");
-    } else if (mediaType == kCMMediaType_Metadata) {
-        printf("kCMMediaType_Metadata");
-    } else {
-        printf("%s", NSFileTypeForHFSTypeCode(mediaType).p);
-    }
-}
-
-static void printTransform(int indent, CGAffineTransform transform)
-{
-    if (CGAffineTransformIsIdentity(transform)) {
-        printf("CGAffineTransformIdentity");
-    } else {
-        printf("{\n");
-        printWithIndent(indent + 1, "%f, %f, %f\n", transform.a, transform.b, 0.0);
-        printWithIndent(indent + 1, "%f, %f, %f\n", transform.c, transform.d, 0.0);
-        printWithIndent(indent + 1, "%f, %f, %f\n", transform.tx, transform.ty, 1.0);
-        printWithIndent(indent, "}");
-    }
-}
 
 static void printObject(int indent, NSObject *value) {
     if (!value) {
@@ -546,4 +497,348 @@ static void printWithIndent(int indent, const char *format, ...)
     va_start(args, format);
     printf("%*s", spacesToIndent * indent, "");
     vprintf(format, args);
+}
+
+static void printTransform(int indent, CGAffineTransform transform)
+{
+    if (CGAffineTransformIsIdentity(transform)) {
+        printf("CGAffineTransformIdentity");
+    } else {
+        printf("{\n");
+        printWithIndent(indent + 1, "%f, %f, %f\n", transform.a, transform.b, 0.0);
+        printWithIndent(indent + 1, "%f, %f, %f\n", transform.c, transform.d, 0.0);
+        printWithIndent(indent + 1, "%f, %f, %f\n", transform.tx, transform.ty, 1.0);
+        printWithIndent(indent, "}");
+    }
+}
+
+static void printAVMediaType(NSString *mediaType)
+{
+    if ([mediaType isEqualToString:AVMediaTypeVideo]) {
+        printf("AVMediaTypeVideo");
+    } else if ([mediaType isEqualToString:AVMediaTypeAudio]) {
+        printf("AVMediaTypeAudio");
+    } else if ([mediaType isEqualToString:AVMediaTypeText]) {
+        printf("AVMediaTypeText");
+    } else if ([mediaType isEqualToString:AVMediaTypeClosedCaption]) {
+        printf("AVMediaTypeClosedCaption");
+    } else if ([mediaType isEqualToString:AVMediaTypeSubtitle]) {
+        printf("AVMediaTypeSubtitle");
+    } else if ([mediaType isEqualToString:AVMediaTypeTimecode]) {
+        printf("AVMediaTypeTimecode");
+    } else if ([mediaType isEqualToString:AVMediaTypeMetadata]) {
+        printf("AVMediaTypeMetadata");
+    } else if ([mediaType isEqualToString:AVMediaTypeMuxed]) {
+        printf("AVMediaTypeMuxed");
+    } else {
+        printf("%s", mediaType.q);
+    }
+}
+
+static void printFourCharCode(FourCharCode fourCharCode)
+{
+    // CMMediaType
+    if (fourCharCode == kCMMediaType_Video) {
+        printf("kCMMediaType_Video");
+    } else if (fourCharCode == kCMMediaType_Audio) {
+        printf("kCMMediaType_Audio");
+    } else if (fourCharCode == kCMMediaType_Muxed) {
+        printf("kCMMediaType_Muxed");
+    } else if (fourCharCode == kCMMediaType_Text) {
+        printf("kCMMediaType_Text");
+    } else if (fourCharCode == kCMMediaType_ClosedCaption) {
+        printf("kCMMediaType_ClosedCaption");
+    } else if (fourCharCode == kCMMediaType_Subtitle) {
+        printf("kCMMediaType_Subtitle");
+    } else if (fourCharCode == kCMMediaType_TimeCode) {
+        printf("kCMMediaType_TimeCode");
+    } else if (fourCharCode == kCMMediaType_Metadata) {
+        printf("kCMMediaType_Metadata");
+    }
+    
+    // CMTimeCodeFormatType
+    else if (fourCharCode == kCMTimeCodeFormatType_TimeCode32) {
+        printf("kCMTimeCodeFormatType_TimeCode32");
+    } else if (fourCharCode == kCMTimeCodeFormatType_TimeCode64) {
+        printf("kCMTimeCodeFormatType_TimeCode64");
+    } else if (fourCharCode == kCMTimeCodeFormatType_Counter32) {
+        printf("kCMTimeCodeFormatType_Counter32");
+    } else if (fourCharCode == kCMTimeCodeFormatType_Counter64) {
+        printf("kCMTimeCodeFormatType_Counter64");
+    }
+    
+    // CMTextFormatType
+    else if (fourCharCode == kCMTextFormatType_QTText) {
+        printf("kCMTextFormatType_QTText");
+    } else if (fourCharCode == kCMTextFormatType_3GText) {
+        printf("kCMTextFormatType_3GText");
+    }
+    
+    // CMAudioCodecType
+    else if (fourCharCode == kCMAudioCodecType_AAC_LCProtected) {
+        printf("kCMAudioCodecType_AAC_LCProtected");
+    } else if (fourCharCode == kCMAudioCodecType_AAC_AudibleProtected) {
+        printf("kCMAudioCodecType_AAC_AudibleProtected");
+    }
+    
+    // CMMuxedStreamType
+    else if (fourCharCode == kCMMuxedStreamType_MPEG1System) {
+        printf("kCMMuxedStreamType_MPEG1System");
+    } else if (fourCharCode == kCMMuxedStreamType_MPEG2Transport) {
+        printf("kCMMuxedStreamType_MPEG2Transport");
+    } else if (fourCharCode == kCMMuxedStreamType_MPEG2Program) {
+        printf("kCMMuxedStreamType_MPEG2Program");
+    } else if (fourCharCode == kCMMuxedStreamType_DV) {
+        printf("kCMMuxedStreamType_DV");
+    }
+    
+    // CMClosedCaptionFormatType
+    else if (fourCharCode == kCMClosedCaptionFormatType_CEA608) {
+        printf("kCMClosedCaptionFormatType_CEA608");
+    } else if (fourCharCode == kCMClosedCaptionFormatType_CEA708) {
+        printf("kCMClosedCaptionFormatType_CEA708");
+    }
+    
+    // CMPixelFormatType
+    else if (fourCharCode == kCMPixelFormat_32ARGB) {
+        printf("kCMPixelFormat_32ARGB");
+    } else if (fourCharCode == kCMPixelFormat_32BGRA) {
+        printf("kCMPixelFormat_32BGRA");
+    } else if (fourCharCode == kCMPixelFormat_24RGB) {
+        printf("kCMPixelFormat_24RGB");
+    } else if (fourCharCode == kCMPixelFormat_16BE555) {
+        printf("kCMPixelFormat_16BE555");
+    } else if (fourCharCode == kCMPixelFormat_16BE565) {
+        printf("kCMPixelFormat_16BE565");
+    } else if (fourCharCode == kCMPixelFormat_16LE555) {
+        printf("kCMPixelFormat_16LE555");
+    } else if (fourCharCode == kCMPixelFormat_16LE565) {
+        printf("kCMPixelFormat_16LE565");
+    } else if (fourCharCode == kCMPixelFormat_16LE5551) {
+        printf("kCMPixelFormat_16LE5551");
+    } else if (fourCharCode == kCMPixelFormat_422YpCbCr8) {
+        printf("kCMPixelFormat_422YpCbCr8");
+    } else if (fourCharCode == kCMPixelFormat_422YpCbCr8_yuvs) {
+        printf("kCMPixelFormat_422YpCbCr8_yuvs");
+    } else if (fourCharCode == kCMPixelFormat_444YpCbCr8) {
+        printf("kCMPixelFormat_444YpCbCr8");
+    } else if (fourCharCode == kCMPixelFormat_4444YpCbCrA8) {
+        printf("kCMPixelFormat_4444YpCbCrA8");
+    } else if (fourCharCode == kCMPixelFormat_422YpCbCr16) {
+        printf("kCMPixelFormat_422YpCbCr16");
+    } else if (fourCharCode == kCMPixelFormat_422YpCbCr10) {
+        printf("kCMPixelFormat_422YpCbCr10");
+    } else if (fourCharCode == kCMPixelFormat_444YpCbCr10) {
+        printf("kCMPixelFormat_444YpCbCr10");
+    } else if (fourCharCode == kCMPixelFormat_8IndexedGray_WhiteIsZero) {
+        printf("kCMPixelFormat_8IndexedGray_WhiteIsZero");
+    }
+    
+    // CMMetadataFormatType
+    else if (fourCharCode == kCMMetadataFormatType_ICY) {
+        printf("kCMMetadataFormatType_ICY");
+    } else if (fourCharCode == kCMMetadataFormatType_ID3) {
+        printf("kCMMetadataFormatType_ID3");
+    } else if (fourCharCode == kCMMetadataFormatType_Boxed) {
+        printf("kCMMetadataFormatType_Boxed");
+    }
+    
+    // CMVideoCodecType
+    else if (fourCharCode == kCMVideoCodecType_422YpCbCr8) {
+        printf("kCMVideoCodecType_422YpCbCr8");
+    } else if (fourCharCode == kCMVideoCodecType_Animation) {
+        printf("kCMVideoCodecType_Animation");
+    } else if (fourCharCode == kCMVideoCodecType_Cinepak) {
+        printf("kCMVideoCodecType_Cinepak");
+    } else if (fourCharCode == kCMVideoCodecType_JPEG) {
+        printf("kCMVideoCodecType_JPEG");
+    } else if (fourCharCode == kCMVideoCodecType_JPEG_OpenDML) {
+        printf("kCMVideoCodecType_JPEG_OpenDML");
+    } else if (fourCharCode == kCMVideoCodecType_SorensonVideo) {
+        printf("kCMVideoCodecType_SorensonVideo");
+    } else if (fourCharCode == kCMVideoCodecType_SorensonVideo3) {
+        printf("kCMVideoCodecType_SorensonVideo3");
+    } else if (fourCharCode == kCMVideoCodecType_H263) {
+        printf("kCMVideoCodecType_H263");
+    } else if (fourCharCode == kCMVideoCodecType_H264) {
+        printf("kCMVideoCodecType_H264");
+    } else if (fourCharCode == kCMVideoCodecType_MPEG4Video) {
+        printf("kCMVideoCodecType_MPEG4Video");
+    } else if (fourCharCode == kCMVideoCodecType_MPEG2Video) {
+        printf("kCMVideoCodecType_MPEG2Video");
+    } else if (fourCharCode == kCMVideoCodecType_MPEG1Video) {
+        printf("kCMVideoCodecType_MPEG1Video");
+    } else if (fourCharCode == kCMVideoCodecType_DVCNTSC) {
+        printf("kCMVideoCodecType_DVCNTSC");
+    } else if (fourCharCode == kCMVideoCodecType_DVCPAL) {
+        printf("kCMVideoCodecType_DVCPAL");
+    } else if (fourCharCode == kCMVideoCodecType_DVCProPAL) {
+        printf("kCMVideoCodecType_DVCProPAL");
+    } else if (fourCharCode == kCMVideoCodecType_DVCPro50NTSC) {
+        printf("kCMVideoCodecType_DVCPro50NTSC");
+    } else if (fourCharCode == kCMVideoCodecType_DVCPro50PAL) {
+        printf("kCMVideoCodecType_DVCPro50PAL");
+    } else if (fourCharCode == kCMVideoCodecType_DVCPROHD720p60) {
+        printf("kCMVideoCodecType_DVCPROHD720p60");
+    } else if (fourCharCode == kCMVideoCodecType_DVCPROHD720p50) {
+        printf("kCMVideoCodecType_DVCPROHD720p50");
+    } else if (fourCharCode == kCMVideoCodecType_DVCPROHD1080i60) {
+        printf("kCMVideoCodecType_DVCPROHD1080i60");
+    } else if (fourCharCode == kCMVideoCodecType_DVCPROHD1080i50) {
+        printf("kCMVideoCodecType_DVCPROHD1080i50");
+    } else if (fourCharCode == kCMVideoCodecType_DVCPROHD1080p30) {
+        printf("kCMVideoCodecType_DVCPROHD1080p30");
+    } else if (fourCharCode == kCMVideoCodecType_DVCPROHD1080p25) {
+        printf("kCMVideoCodecType_DVCPROHD1080p25");
+    }
+    
+    // Video Profiles
+    else if (fourCharCode == kCMMPEG2VideoProfile_HDV_720p30) {
+        printf("kCMMPEG2VideoProfile_HDV_720p30");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_HDV_1080i60) {
+        printf("kCMMPEG2VideoProfile_HDV_1080i60");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_HDV_1080i50) {
+        printf("kCMMPEG2VideoProfile_HDV_1080i50");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_HDV_720p24) {
+        printf("kCMMPEG2VideoProfile_HDV_720p24");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_HDV_720p25) {
+        printf("kCMMPEG2VideoProfile_HDV_720p25");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_HDV_1080p24) {
+        printf("kCMMPEG2VideoProfile_HDV_1080p24");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_HDV_1080p25) {
+        printf("kCMMPEG2VideoProfile_HDV_1080p25");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_HDV_1080p30) {
+        printf("kCMMPEG2VideoProfile_HDV_1080p30");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_HDV_720p60) {
+        printf("kCMMPEG2VideoProfile_HDV_720p60");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_HDV_720p50) {
+        printf("kCMMPEG2VideoProfile_HDV_720p50");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD_1080i60_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD_1080i60_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD_1080i50_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD_1080i50_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD_1080p24_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD_1080p24_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD_1080p25_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD_1080p25_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD_1080p30_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD_1080p30_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_EX_720p24_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_EX_720p24_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_EX_720p25_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_EX_720p25_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_EX_720p30_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_EX_720p30_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_EX_720p50_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_EX_720p50_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_EX_720p60_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_EX_720p60_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_EX_1080i60_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_EX_1080i60_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_EX_1080i50_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_EX_1080i50_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_EX_1080p24_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_EX_1080p24_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_EX_1080p25_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_EX_1080p25_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_EX_1080p30_VBR35) {
+        printf("kCMMPEG2VideoProfile_XDCAM_EX_1080p30_VBR35");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD422_720p50_CBR50) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD422_720p50_CBR50");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD422_720p60_CBR50) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD422_720p60_CBR50");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD422_1080i60_CBR50) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD422_1080i60_CBR50");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD422_1080i50_CBR50) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD422_1080i50_CBR50");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD422_1080p24_CBR50) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD422_1080p24_CBR50");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD422_1080p25_CBR50) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD422_1080p25_CBR50");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD422_1080p30_CBR50) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD422_1080p30_CBR50");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD_540p) {
+        printf("kCMMPEG2VideoProfile_XDCAM_HD422_540p");
+    } else if (fourCharCode == kCMMPEG2VideoProfile_XDCAM_HD422_540p) {
+        printf("kCMVideoCodecType_DVCPROHD1080p25");
+    }
+    
+    // Audio Data Format Identifiers
+    else if (fourCharCode == kAudioFormatLinearPCM) {
+        printf("kAudioFormatLinearPCM");
+    } else if (fourCharCode == kAudioFormatAC3) {
+        printf("kAudioFormatAC3");
+    } else if (fourCharCode == kAudioFormat60958AC3) {
+        printf("kAudioFormat60958AC3");
+    } else if (fourCharCode == kAudioFormatAppleIMA4) {
+        printf("kAudioFormatAppleIMA4");
+    } else if (fourCharCode == kAudioFormatMPEG4AAC) {
+        printf("kAudioFormatMPEG4AAC");
+    } else if (fourCharCode == kAudioFormatMPEG4CELP) {
+        printf("kAudioFormatMPEG4CELP");
+    } else if (fourCharCode == kAudioFormatMPEG4HVXC) {
+        printf("kAudioFormatMPEG4HVXC");
+    } else if (fourCharCode == kAudioFormatMPEG4TwinVQ) {
+        printf("kAudioFormatMPEG4TwinVQ");
+    } else if (fourCharCode == kAudioFormatMACE3) {
+        printf("kAudioFormatMACE3");
+    } else if (fourCharCode == kAudioFormatMACE6) {
+        printf("kAudioFormatMACE6");
+    } else if (fourCharCode == kAudioFormatULaw) {
+        printf("kAudioFormatULaw");
+    } else if (fourCharCode == kAudioFormatALaw) {
+        printf("kAudioFormatALaw");
+    } else if (fourCharCode == kAudioFormatQDesign) {
+        printf("kAudioFormatQDesign");
+    } else if (fourCharCode == kAudioFormatQDesign2) {
+        printf("kAudioFormatQDesign2");
+    } else if (fourCharCode == kAudioFormatQUALCOMM) {
+        printf("kAudioFormatQUALCOMM");
+    } else if (fourCharCode == kAudioFormatMPEGLayer1) {
+        printf("kAudioFormatMPEGLayer1");
+    } else if (fourCharCode == kAudioFormatMPEGLayer2) {
+        printf("kAudioFormatMPEGLayer2");
+    } else if (fourCharCode == kAudioFormatMPEGLayer3) {
+        printf("kAudioFormatMPEGLayer3");
+    } else if (fourCharCode == kAudioFormatTimeCode) {
+        printf("kAudioFormatTimeCode");
+    } else if (fourCharCode == kAudioFormatMIDIStream) {
+        printf("kAudioFormatMIDIStream");
+    } else if (fourCharCode == kAudioFormatParameterValueStream) {
+        printf("kAudioFormatParameterValueStream");
+    } else if (fourCharCode == kAudioFormatAppleLossless) {
+        printf("kAudioFormatAppleLossless");
+    } else if (fourCharCode == kAudioFormatMPEG4AAC_HE) {
+        printf("kAudioFormatMPEG4AAC_HE");
+    } else if (fourCharCode == kAudioFormatMPEG4AAC_LD) {
+        printf("kAudioFormatMPEG4AAC_LD");
+    } else if (fourCharCode == kAudioFormatMPEG4AAC_ELD) {
+        printf("kAudioFormatMPEG4AAC_ELD");
+    } else if (fourCharCode == kAudioFormatMPEG4AAC_ELD_SBR) {
+        printf("kAudioFormatMPEG4AAC_ELD_SBR");
+    } else if (fourCharCode == kAudioFormatMPEG4AAC_HE_V2) {
+        printf("kAudioFormatMPEG4AAC_HE_V2");
+    } else if (fourCharCode == kAudioFormatMPEG4AAC_Spatial) {
+        printf("kAudioFormatMPEG4AAC_Spatial");
+    } else if (fourCharCode == kAudioFormatAMR) {
+        printf("kAudioFormatAMR");
+    } else if (fourCharCode == kAudioFormatAudible) {
+        printf("kAudioFormatAudible");
+    } else if (fourCharCode == kAudioFormatiLBC) {
+        printf("kAudioFormatiLBC");
+    } else if (fourCharCode == kAudioFormatDVIIntelIMA) {
+        printf("kAudioFormatDVIIntelIMA");
+    } else if (fourCharCode == kAudioFormatMicrosoftGSM) {
+        printf("kAudioFormatMicrosoftGSM");
+    } else if (fourCharCode == kAudioFormatAES3) {
+        printf("kAudioFormatAES3");
+    }
+    
+    // Other
+    else {
+        printf("%s", NSFileTypeForHFSTypeCode(fourCharCode).p);
+    }
+    
+    // Include a comment with the FourCharCode.
+    printf("; // %s\n", NSFileTypeForHFSTypeCode(fourCharCode).p);
 }
