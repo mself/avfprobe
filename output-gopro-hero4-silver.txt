@@ -20,7 +20,18 @@
 
     // Media Selections
     compatibleWithAirPlayVideo = YES;
-    creationDate = (null);
+    creationDate = {
+        identifier = "common/creationDate";
+        keySpace = "comn";
+        key = "creationDate";
+        commonKey = "creationDate";
+        dataType = (null);
+        value = 2015-02-28 12:16:11 +0000;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    };
 
     // Tracks
     tracks = [
@@ -97,7 +108,7 @@
                         "VerbatimISOSampleEntry" = <000000b7 61766331 00000000 00000001 00000000 00000000 00000000 00000000 07800438 00480000 00480000 00000000 00011147 6f50726f 20415643 20656e63 6f646572 00000000 00000000 00000000 00000018 ffff0000 0012636f 6c726e63 6c630001 00010001 0000004f 61766343 0164002a ffe10038 2764002a ac34c807 80227e5c 05b80808 0a000007 d20003a9 81d0c000 e4e00000 e4e1d779 71a18001 c9c00001 c9c3aef2 e1f08845 16000000 01000428 ee3830>;
                         "Version" = 0;
                     };
-                },
+                }
             ];
 
             // Metadata
@@ -170,7 +181,7 @@
                     extensions = {
                         "VerbatimISOSampleEntry" = <00000056 6d703461 00000000 00000001 00000000 00000000 00020010 fffe0000 bb800000 00000032 65736473 00000000 03808022 00000004 80801640 15002000 0001f400 0001f400 05808005 11900000 00068080 0102>;
                     };
-                },
+                }
             ];
 
             // Metadata
@@ -229,13 +240,13 @@
                     extensions = {
                         "VerbatimSampleDescription" = <00000022 746d6364 00000000 00000001 00000000 00000002 0000ea60 000003e9 3c00>;
                     };
-                },
+                }
             ];
 
             // Metadata
             metadata = [
             ];
-        },
+        }
     ];
 
     // Metadata
@@ -347,7 +358,7 @@
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
-        },
+        }
     ];
 
     // Lyrics

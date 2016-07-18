@@ -1,5 +1,5 @@
-avf-probe
-=========
+avfprobe
+========
 
 `avfprobe` is an OS X command line tool that prints detailed information about audio and video files using `AVFoundation`.
  

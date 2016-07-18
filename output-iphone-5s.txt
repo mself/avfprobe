@@ -20,7 +20,18 @@
 
     // Media Selections
     compatibleWithAirPlayVideo = YES;
-    creationDate = (null);
+    creationDate = {
+        identifier = "common/creationDate";
+        keySpace = "comn";
+        key = "creationDate";
+        commonKey = "creationDate";
+        dataType = (null);
+        value = 2016-04-13 03:40:45 +0000;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    };
 
     // Tracks
     tracks = [
@@ -93,7 +104,7 @@
                         "VerbatimSampleDescription" = <00000098 61766331 00000000 00000001 00000000 00000000 00000200 00000200 07800438 00480000 00480000 00000000 00010548 2e323634 00000000 00000000 00000000 00000000 00000000 00000000 00000018 ffff0000 002c6176 63430164 0029ffe1 00106764 0029ac56 80780227 e59a8080 80810100 0528ee04 f2c0fdf8 f8000000 0012636f 6c726e63 6c630001 00010001 00000000>;
                         "Version" = 0;
                     };
-                },
+                }
             ];
 
             // Metadata
@@ -166,7 +177,7 @@
                     extensions = {
                         "VerbatimSampleDescription" = <000000a7 6d703461 00000000 00000001 00010000 00000000 00010010 fffe0000 ac440000 00000400 00000002 00000002 00000002 00000018 6368616e 00000000 00640001 00000000 00000000 0000005b 77617665 0000000c 66726d61 6d703461 0000000c 6d703461 00000000 00000033 65736473 00000000 03808080 22000000 04808080 14401500 18000000 fa000000 fa000580 80800212 08068080 80010200 00000800 000000>;
                     };
-                },
+                }
             ];
 
             // Metadata
@@ -226,7 +237,7 @@
                                     {
                                         "MetadataKeyDataType" = <00000045>;
                                         "MetadataKeyDataTypeNameSpace" = 0;
-                                    },
+                                    }
                                 ];
                                 "MetadataKeyDataType" = (NSData *)"com.apple.quicktime.detected-face";
                                 "MetadataKeyDataTypeNameSpace" = 1;
@@ -277,14 +288,14 @@
                                 2,
                                 3,
                                 4,
-                                5,
+                                5
                             ];
                         };
                         "MetadataPrimaryLocalIDs" = [
-                            1,
+                            1
                         ];
                     };
-                },
+                }
             ];
 
             // Metadata
@@ -351,13 +362,13 @@
                             };
                         };
                     };
-                },
+                }
             ];
 
             // Metadata
             metadata = [
             ];
-        },
+        }
     ];
 
     // Metadata
@@ -365,7 +376,7 @@
         {
             identifier = "mdta/com.apple.quicktime.location.ISO6709";
             keySpace = "mdta";
-            key = com.apple.quicktime.location.ISO6709;
+            key = "com.apple.quicktime.location.ISO6709";
             commonKey = "location";
             dataType = "com.apple.metadata.datatype.UTF-8";
             value = "+37.4866-122.2296+005.952/";
@@ -377,7 +388,7 @@
         {
             identifier = "mdta/com.apple.quicktime.make";
             keySpace = "mdta";
-            key = com.apple.quicktime.make;
+            key = "com.apple.quicktime.make";
             commonKey = "make";
             dataType = "com.apple.metadata.datatype.UTF-8";
             value = "Apple";
@@ -389,7 +400,7 @@
         {
             identifier = "mdta/com.apple.quicktime.model";
             keySpace = "mdta";
-            key = com.apple.quicktime.model;
+            key = "com.apple.quicktime.model";
             commonKey = "model";
             dataType = "com.apple.metadata.datatype.UTF-8";
             value = "iPhone 5s";
@@ -401,7 +412,7 @@
         {
             identifier = "mdta/com.apple.quicktime.software";
             keySpace = "mdta";
-            key = com.apple.quicktime.software;
+            key = "com.apple.quicktime.software";
             commonKey = "software";
             dataType = "com.apple.metadata.datatype.UTF-8";
             value = "9.3.1";
@@ -413,7 +424,7 @@
         {
             identifier = "mdta/com.apple.quicktime.creationdate";
             keySpace = "mdta";
-            key = com.apple.quicktime.creationdate;
+            key = "com.apple.quicktime.creationdate";
             commonKey = "creationDate";
             dataType = "com.apple.metadata.datatype.UTF-8";
             value = "2016-04-12T20:40:45-0700";
@@ -421,7 +432,7 @@
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
-        },
+        }
     ];
 
     // Lyrics

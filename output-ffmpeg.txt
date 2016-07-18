@@ -20,7 +20,18 @@
 
     // Media Selections
     compatibleWithAirPlayVideo = YES;
-    creationDate = (null);
+    creationDate = {
+        identifier = "common/creationDate";
+        keySpace = "comn";
+        key = "creationDate";
+        commonKey = "creationDate";
+        dataType = (null);
+        value = 2016-07-15 14:53:23 +0000;
+        time = {0/0 = nan}; // sec
+        duration = {0/0 = nan}; // sec
+        locale = (null);
+        extendedLanguageTag = (null);
+    };
 
     // Tracks
     tracks = [
@@ -94,13 +105,13 @@
                         "VerbatimISOSampleEntry" = <0000009e 61766331 00000000 00000001 00000000 00000000 00000000 00000000 07800438 00480000 00480000 00000000 00010000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000018 ffff0000 00386176 63430164 0029ffe1 00212764 0029ac13 16c07802 27e5c044 00009c40 001e8483 818002ee 0000bb82 f7be0a01 000428ee 1f2c0000 00107061 73700000 00010000 0001>;
                         "Version" = 0;
                     };
-                },
+                }
             ];
 
             // Metadata
             metadata = [
             ];
-        },
+        }
     ];
 
     // Metadata
