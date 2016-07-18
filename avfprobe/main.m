@@ -836,7 +836,7 @@ static void printFourCharCode(FourCharCode fourCharCode)
     
     // Other
     else {
-        printf("%s", NSFileTypeForHFSTypeCode(fourCharCode).p);
+        printf("0x%04x", fourCharCode);
     }
     
     // Include a comment with the FourCharCode.
