@@ -108,8 +108,7 @@
             ];
 
             // Metadata
-            metadata = [
-            ];
+            metadata = [];
         },
         {
             // Track Properties
@@ -181,8 +180,7 @@
             ];
 
             // Metadata
-            metadata = [
-            ];
+            metadata = [];
         },
         {
             // Track Properties
@@ -299,8 +297,7 @@
             ];
 
             // Metadata
-            metadata = [
-            ];
+            metadata = [];
         },
         {
             // Track Properties
@@ -366,8 +363,7 @@
             ];
 
             // Metadata
-            metadata = [
-            ];
+            metadata = [];
         }
     ];
 

@@ -109,14 +109,12 @@
             ];
 
             // Metadata
-            metadata = [
-            ];
+            metadata = [];
         }
     ];
 
     // Metadata
-    metadata = [
-    ];
+    metadata = [];
 
     // Lyrics
     lyrics = (null);

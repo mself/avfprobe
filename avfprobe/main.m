@@ -503,28 +503,36 @@ static void printObject(int indent, NSObject *value) {
     } else if ([value isKindOfClass:[NSArray class]] ) {
         NSArray *array = (NSArray *)value;
         
-        printf("[\n");
-        for (NSObject *item in array) {
-            printWithIndent(indent + 1, ""); printObject(indent + 1, item);
-            if (item == array.lastObject) {
-                printf("\n");
-            } else {
-                printf(",\n");
+        if (array.count == 0) {
+            printf("[]");
+        } else {
+            printf("[\n");
+            for (NSObject *item in array) {
+                printWithIndent(indent + 1, ""); printObject(indent + 1, item);
+                if (item == array.lastObject) {
+                    printf("\n");
+                } else {
+                    printf(",\n");
+                }
             }
+            printWithIndent(indent, "]");
         }
-        printWithIndent(indent, "]");
     } else if ([value isKindOfClass:[NSDictionary class]] ) {
         NSDictionary *dictionary = (NSDictionary *)value;
         
-        printf("{\n");
-        for (NSString *key in [dictionary.allKeys sortedArrayUsingComparator: ^(id obj1, id obj2) {
-            return [(NSString *)obj1 compare:(NSString *)obj2];
-        }]) {
-            printWithIndent(indent + 1, "%s = ", key.q);
-            printObject(indent + 1, dictionary[key]);
-            printf(";\n");
+        if (dictionary.count == 0) {
+            printf("{}");
+        } else {
+            printf("{\n");
+            for (NSString *key in [dictionary.allKeys sortedArrayUsingComparator: ^(id obj1, id obj2) {
+                return [(NSString *)obj1 compare:(NSString *)obj2];
+            }]) {
+                printWithIndent(indent + 1, "%s = ", key.q);
+                printObject(indent + 1, dictionary[key]);
+                printf(";\n");
+            }
+            printWithIndent(indent, "}");
         }
-        printWithIndent(indent, "}");
     } else {
         printf("(%s *) %s", value.className.p, value.description.p);
     }
