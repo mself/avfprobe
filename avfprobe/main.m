@@ -12,12 +12,14 @@
 #import <stddef.h>
 
 static void printAsset(AVURLAsset *asset);
-static void printTrack(AVAssetTrack *track);
-static void printMetadata(AVMetadataItem *item, const char *indent);
-static void printFormatDescription(CMFormatDescriptionRef formatDescription);
+static void printTrack(int indent, AVAssetTrack *track);
+static void printMetadata(int indent, AVMetadataItem *item);
+static void printFormatDescription(int indent, CMFormatDescriptionRef formatDescription);
 static void printAVMediaType(NSString *mediaType);
 static void printCMMediaType(CMMediaType mediaType);
-static void printTransform(CGAffineTransform transform, const char *indent);
+static void printTransform(int indent, CGAffineTransform transform);
+static void printObject(int indent, NSObject *value);
+static void printWithIndent(int indent, const char *format, ...);
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -70,53 +72,57 @@ int main(int argc, const char * argv[]) {
 
 static void printAsset(AVURLAsset *asset)
 {
+    int indent = 0;
+    
     printf("{\n");
+    indent++;
     
     // Asset Properties
-    printf("    // Asset Properties\n");
-    printf("    URL = %s;\n", asset.URL.absoluteString.q);
+    printWithIndent(indent, "// Asset Properties\n");
+    printWithIndent(indent, "URL = %s;\n", asset.URL.absoluteString.q);
     
     printf("\n");
     
     // Determining Usability
-    printf("    // Determining Usability\n");
-    printf("    hasProtectedContent = %s;\n", asset.hasProtectedContent ? "YES" : "NO");
-    printf("    playable = %s;\n", asset.playable ? "YES" : "NO");
-    printf("    exportable = %s;\n", asset.exportable ? "YES" : "NO");
-    printf("    readable = %s;\n", asset.readable ? "YES" : "NO");
-    printf("    composable = %s;\n", asset.composable ? "YES" : "NO");
+    printWithIndent(indent, "// Determining Usability\n");
+    printWithIndent(indent, "hasProtectedContent = %s;\n", asset.hasProtectedContent ? "YES" : "NO");
+    printWithIndent(indent, "playable = %s;\n", asset.playable ? "YES" : "NO");
+    printWithIndent(indent, "exportable = %s;\n", asset.exportable ? "YES" : "NO");
+    printWithIndent(indent, "readable = %s;\n", asset.readable ? "YES" : "NO");
+    printWithIndent(indent, "composable = %s;\n", asset.composable ? "YES" : "NO");
     
     printf("\n");
     
     // Accessing Common Metadata
-    printf("    // Accessing Common Metadata\n");
-    printf("    duration = %f; // sec\n", CMTimeGetSeconds(asset.duration));
-    printf("    providesPreciseDurationAndTiming = %s;\n", asset.providesPreciseDurationAndTiming ? "YES" : "NO");
+    printWithIndent(indent, "// Accessing Common Metadata\n");
+    printWithIndent(indent, "duration = {%lld/%d = %f}; // sec\n",
+           asset.duration.value, asset.duration.timescale, CMTimeGetSeconds(asset.duration));
+    printWithIndent(indent, "providesPreciseDurationAndTiming = %s;\n", asset.providesPreciseDurationAndTiming ? "YES" : "NO");
     
     printf("\n");
     
     // Preferred Asset Attributes
-    printf("    // Preferred Asset Attributes\n");
-    printf("    preferredRate = %f;\n", asset.preferredRate);
-    printf("    preferredTransform = "); printTransform(asset.preferredTransform, "    ");
-    printf("    preferredVolume = %f;\n", asset.preferredVolume);
+    printWithIndent(indent, "// Preferred Asset Attributes\n");
+    printWithIndent(indent, "preferredRate = %f;\n", asset.preferredRate);
+    printWithIndent(indent, "preferredTransform = "); printTransform(indent, asset.preferredTransform);
+    printWithIndent(indent, "preferredVolume = %f;\n", asset.preferredVolume);
     
     printf("\n");
     
     // Media Selections
-    printf("    // Media Selections\n");
-    printf("    compatibleWithAirPlayVideo = %s;\n", asset.compatibleWithAirPlayVideo ? "YES" : "NO");
-    printf("    creationDate = %s;\n", asset.creationDate.stringValue.p);
+    printWithIndent(indent, "// Media Selections\n");
+    printWithIndent(indent, "compatibleWithAirPlayVideo = %s;\n", asset.compatibleWithAirPlayVideo ? "YES" : "NO");
+    printWithIndent(indent, "creationDate = %s;\n", asset.creationDate.stringValue.p);
     
     printf("\n");
     
     // Tracks
-    printf("    // Tracks\n");
-    printf("    tracks = [\n");
+    printWithIndent(indent, "// Tracks\n");
+    printWithIndent(indent, "tracks = [\n");
     for (AVAssetTrack *track in asset.tracks) {
-        printTrack(track);
+        printTrack(indent + 1, track);
     }
-    printf("    ];\n");
+    printWithIndent(indent, "];\n");
 
     // Track Groups
     // (ignore for now)
@@ -124,176 +130,289 @@ static void printAsset(AVURLAsset *asset)
     printf("\n");
     
     // Metadata
-    printf("    // Metadata\n");
-    printf("    metadata = [\n");
+    printWithIndent(indent, "// Metadata\n");
+    printWithIndent(indent, "metadata = [\n");
     for (AVMetadataItem *item in asset.metadata) {
-        printMetadata(item, "    ");
+        printMetadata(indent + 1, item);
     }
-    printf("    ];\n");
+    printWithIndent(indent, "];\n");
     
     printf("\n");
     
     // Lyrics
-    printf("    // Lyrics\n");
-    printf("    lyrics = %s;\n", asset.lyrics.q);
+    printWithIndent(indent, "// Lyrics\n");
+    printWithIndent(indent, "lyrics = %s;\n", asset.lyrics.q);
     
-    printf("}\n");
+    indent--;
+    printf("};\n");
 }
 
-static void printTrack(AVAssetTrack *track)
+static void printTrack(int indent, AVAssetTrack *track)
 {
-    printf("    {\n");
+    printWithIndent(indent, "{\n");
+    indent++;
     
     // Track Properties
-    printf("        // Track Properties\n");
-    printf("        trackID = %d;\n", track.trackID);
+    printWithIndent(indent, "// Track Properties\n");
+    printWithIndent(indent, "trackID = %d;\n", track.trackID);
     
-    printf("        mediaType = ");
+    printWithIndent(indent, "mediaType = ");
     printAVMediaType(track.mediaType);
     printf("; // = %s\n", track.mediaType.q);
     
-    printf("        enabled = %s;\n", track.enabled ? "YES" : "NO");
-    printf("        playable = %s;\n", track.playable ? "YES" : "NO");
-    printf("        selfContained = %s;\n", track.selfContained ? "YES" : "NO");
-    printf("        totalSampleDataLength = %lld; // bytes (= %f bps)\n", track.totalSampleDataLength,
+    printWithIndent(indent, "enabled = %s;\n", track.enabled ? "YES" : "NO");
+    printWithIndent(indent, "playable = %s;\n", track.playable ? "YES" : "NO");
+    printWithIndent(indent, "selfContained = %s;\n", track.selfContained ? "YES" : "NO");
+    printWithIndent(indent, "totalSampleDataLength = %lld; // bytes (= %f bps)\n", track.totalSampleDataLength,
            8 * track.totalSampleDataLength / CMTimeGetSeconds(track.timeRange.duration));
     
     printf("\n");
     
     // Temporal Properties
-    printf("        // Temporal Properties\n");
-    printf("        timeRange = {\n");
-    printf("            start = %f; // sec\n", CMTimeGetSeconds(track.timeRange.start));
-    printf("            duration = %f; // sec\n", CMTimeGetSeconds(track.timeRange.duration));
-    printf("        };\n");
-    printf("        naturalTimeScale = %d; // {1/%d = %f} sec\n", track.naturalTimeScale,
+    printWithIndent(indent, "// Temporal Properties\n");
+    printWithIndent(indent, "timeRange = {\n");
+    printWithIndent(indent + 1, "start = {%lld/%d = %f}; // sec\n",
+           track.timeRange.start.value, track.timeRange.start.timescale, CMTimeGetSeconds(track.timeRange.start));
+    printWithIndent(indent + 1, "duration = {%lld/%d = %f}; // sec\n",
+           track.timeRange.duration.value, track.timeRange.duration.timescale, CMTimeGetSeconds(track.timeRange.duration));
+    printWithIndent(indent, "};\n");
+    printWithIndent(indent, "naturalTimeScale = %d; // {1/%d = %f} sec\n", track.naturalTimeScale,
            track.naturalTimeScale, 1.0 / track.naturalTimeScale);
-    printf("        estimatedDataRate = %f; // bps\n", track.estimatedDataRate);
+    printWithIndent(indent, "estimatedDataRate = %f; // bps\n", track.estimatedDataRate);
     
     printf("\n");
     
     // Track Language Properties
-    printf("        // Track Language Properties\n");
-    printf("        languageCode = %s;\n", track.languageCode.q);
-    printf("        extendedLanguageTag = %s;\n", track.extendedLanguageTag.q);
+    printWithIndent(indent, "// Track Language Properties\n");
+    printWithIndent(indent, "languageCode = %s;\n", track.languageCode.q);
+    printWithIndent(indent, "extendedLanguageTag = %s;\n", track.extendedLanguageTag.q);
     
     printf("\n");
     
     // Visual Characteristics
-    printf("        // Visual Characteristics\n");
-    printf("        naturalSize = {\n");
-    printf("            width = %f;\n", track.naturalSize.width);
-    printf("            height = %f;\n", track.naturalSize.height);
-    printf("        };\n");
-    printf("        preferredTransform = "); printTransform(track.preferredTransform, "        ");
+    printWithIndent(indent, "// Visual Characteristics\n");
+    printWithIndent(indent, "naturalSize = {\n");
+    printWithIndent(indent + 1, "width = %f;\n", track.naturalSize.width);
+    printWithIndent(indent + 1, "height = %f;\n", track.naturalSize.height);
+    printWithIndent(indent, "};\n");
+    printWithIndent(indent, "preferredTransform = "); printTransform(indent, track.preferredTransform);
     
     printf("\n");
     
     // Audible Characteristics
-    printf("        // Audible Characteristics\n");
-    printf("        preferredVolume = %f;\n", track.preferredVolume);
+    printWithIndent(indent, "// Audible Characteristics\n");
+    printWithIndent(indent, "preferredVolume = %f;\n", track.preferredVolume);
     
     printf("\n");
     
     // Frame-Based Characteristics
-    printf("        // Frame-Based Characteristics\n");
-    printf("        nominalFrameRate = %f; // fps (= {%f / %d} sec/frame)\n", track.nominalFrameRate,
+    printWithIndent(indent, "// Frame-Based Characteristics\n");
+    printWithIndent(indent, "nominalFrameRate = %f; // fps (= {%f / %d} sec/frame)\n", track.nominalFrameRate,
            track.naturalTimeScale / track.nominalFrameRate, track.naturalTimeScale);
-    printf("        minFrameDuration = {%lld / %d = %f}; // sec (= %f fps)\n", track.minFrameDuration.value,
+    printWithIndent(indent, "minFrameDuration = {%lld / %d = %f}; // sec (= %f fps)\n", track.minFrameDuration.value,
            track.minFrameDuration.timescale, CMTimeGetSeconds(track.minFrameDuration),
            1 / CMTimeGetSeconds(track.minFrameDuration));
-    printf("        requiresFrameReordering = %s;\n", track.requiresFrameReordering ? "YES" : "NO");
+    printWithIndent(indent, "requiresFrameReordering = %s;\n", track.requiresFrameReordering ? "YES" : "NO");
     
     printf("\n");
     
     // Track Segments
     // (ignore for now)
     
-    // Metadata
-    printf("        // Metadata\n");
-    printf("        metadata = [\n");
-    for (AVMetadataItem *item in track.metadata) {
-        printMetadata(item, "        ");
+    // Format Descriptions
+    printWithIndent(indent, "// Format Descriptions\n");
+    printWithIndent(indent, "formatDescriptions = [\n");
+    for (id item in track.formatDescriptions) {
+        printFormatDescription(indent + 1, (__bridge CMFormatDescriptionRef)item);
     }
-    printf("        ];\n");
-    
+    printWithIndent(indent, "];\n");
+
     printf("\n");
     
-    // Format Descriptions
-    printf("        // Format Descriptions\n");
-    printf("        formatDescriptions = [\n");
-    for (id item in track.formatDescriptions) {
-        CMFormatDescriptionRef formatDescription = (__bridge CMFormatDescriptionRef)item;
-        
-        printFormatDescription(formatDescription);
+    // Metadata
+    printWithIndent(indent, "// Metadata\n");
+    printWithIndent(indent, "metadata = [\n");
+    for (AVMetadataItem *item in track.metadata) {
+        printMetadata(indent + 1, item);
     }
-    printf("        ];\n");
-
-    printf("    },\n");
+    printWithIndent(indent, "];\n");
+    
+    indent--;
+    printWithIndent(indent, "},\n");
 }
 
-static void printMetadata(AVMetadataItem *item, const char *indent)
+static void printMetadata(int indent, AVMetadataItem *item)
 {
-    printf("%s{\n", indent);
+    printWithIndent(indent, "{\n");
+    indent++;
     
     // Keys and Key Spaces
-    printf("%s    identifier = %s;\n", indent, item.identifier.q);
-    printf("%s    keySpace = %s;\n", indent, item.keySpace.q);
-    printf("%s    key = %s;\n", indent, item.key.description.p);
-    printf("%s    commonKey = %s;\n", indent, item.commonKey.q);
+    printWithIndent(indent, "identifier = %s;\n", item.identifier.q);
+    printWithIndent(indent, "keySpace = %s;\n", item.keySpace.q);
+    printWithIndent(indent, "key = %s;\n", item.key.description.p);
+    printWithIndent(indent, "commonKey = %s;\n", item.commonKey.q);
     
     // Accessing Values
-    printf("%s    dataType = %s;\n", indent, item.dataType.q);
-    if (item.stringValue) {
-        printf("%s    value = %s;", indent, item.stringValue.q);
-    } else {
-        printf("%s    value = %s;", indent, item.value.description.p);
-    }
-    if (item.dataValue) {
-        // See if we can interpret the raw data as a UTF8 string.
-        NSString *dataString = [[NSString alloc] initWithData:item.dataValue encoding:NSUTF8StringEncoding];
-        
-        if (dataString) {
-            dataString = [dataString stringByReplacingOccurrencesOfString:@"\0" withString:@""];
-            dataString = [dataString stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
-            dataString = [dataString stringByReplacingOccurrencesOfString:@"\t" withString:@"\\t"];
-            dataString = [dataString stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-            
-            if (dataString.length > 0) {
-                // Add the decoded string as a comment.
-                printf(" // = %s", dataString.q);
-            }
-        }
-    }
-    printf("\n");
-    printf("%s    time = {%lld/%d = %f}; // sec\n", indent, item.time.value, item.time.timescale,
+    printWithIndent(indent, "dataType = %s;\n", item.dataType.q);
+    printWithIndent(indent, "value = "); printObject(indent, item.value); printf(";\n");
+    printWithIndent(indent, "time = {%lld/%d = %f}; // sec\n", item.time.value, item.time.timescale,
            CMTimeGetSeconds(item.time));
-    printf("%s    duration = {%lld/%d = %f}; // sec\n", indent, item.duration.value, item.duration.timescale,
+    printWithIndent(indent, "duration = {%lld/%d = %f}; // sec\n", item.duration.value, item.duration.timescale,
            CMTimeGetSeconds(item.duration));
-    printf("%s    locale = %s;\n", indent, item.locale.localeIdentifier.q);
-    printf("%s    extendedLanguageTag = %s;\n", indent, item.extendedLanguageTag.q);
+    printWithIndent(indent, "locale = %s;\n", item.locale.localeIdentifier.q);
+    printWithIndent(indent, "extendedLanguageTag = %s;\n", item.extendedLanguageTag.q);
     
-    printf("%s},\n", indent);
+    indent--;
+    printWithIndent(indent, "},\n");
 }
 
-static void printFormatDescription(CMFormatDescriptionRef formatDescription)
+static void printFormatDescription(int indent, CMFormatDescriptionRef formatDescription)
 {
-    printf("        {\n");
+#if 0
+    // Use the native description as a cross-reference to debug.
+    NSObject *formatObject = (__bridge NSObject *)(formatDescription);
+    printWithIndent(indent, "%s\n\n", formatObject.description.p);
+#endif
     
+    printWithIndent(indent, "{\n");
+    indent++;
+    
+    // Media-type-Agnostic Functions
+    printWithIndent(indent, "// Media-type-Agnostic Functions\n");
     CMMediaType mediaType = CMFormatDescriptionGetMediaType(formatDescription);
-    printf("            mediaType = ");
+    printWithIndent(indent, "mediaType = ");
     printCMMediaType(mediaType);
     printf("; // = %s\n", NSFileTypeForHFSTypeCode(mediaType).p);
     
     FourCharCode mediaSubType = CMFormatDescriptionGetMediaSubType(formatDescription);
-    printf("            mediaSubType = %s;\n", NSFileTypeForHFSTypeCode(mediaSubType).p);
+    printWithIndent(indent, "mediaSubType = %s;\n", NSFileTypeForHFSTypeCode(mediaSubType).p);
     
-    NSDictionary *extensions = (id)(CMFormatDescriptionGetExtensions(formatDescription));
-    NSString *description = extensions.description;
-    description = [description stringByReplacingOccurrencesOfString:@"\n" withString:@"\n            "];
-    printf("            extensions = %s;\n", description.p);
+    printf("\n");
     
-    printf("        },\n");
+    if (mediaType == kCMMediaType_Audio) {
+        // Audio-Specific Functions
+        printWithIndent(indent, "// Audio-Specific Functions\n");
+        const AudioStreamBasicDescription *desc = CMAudioFormatDescriptionGetStreamBasicDescription(formatDescription);
+        if (desc) {
+            printWithIndent(indent, "AudioStreamBasicDescription = {\n");
+            printWithIndent(indent + 1, "mSampleRate = %f;\n", desc->mSampleRate);
+            printWithIndent(indent + 1, "mFormatID = %s;\n", NSFileTypeForHFSTypeCode(desc->mFormatID).p);
+            printWithIndent(indent + 1, "mFormatFlags = 0x%x;\n", desc->mFormatFlags);
+            printWithIndent(indent + 1, "mBytesPerPacket = %d;\n", desc->mBytesPerPacket);
+            printWithIndent(indent + 1, "mFramesPerPacket = %d;\n", desc->mFramesPerPacket);
+            printWithIndent(indent + 1, "mBytesPerFrame = %d;\n", desc->mBytesPerFrame);
+            printWithIndent(indent + 1, "mChannelsPerFrame = %d;\n", desc->mChannelsPerFrame);
+            printWithIndent(indent + 1, "mBitsPerChannel = %d;\n", desc->mBitsPerChannel);
+            // printWithIndent(indent + 1, "mReserved = %d;\n", desc->mReserved);
+            printWithIndent(indent, "};\n");
+        }
+        
+        size_t cookieSize = 0;
+        const void *magicCookie = CMAudioFormatDescriptionGetMagicCookie(formatDescription, &cookieSize);
+        NSData *data = [NSData dataWithBytes:magicCookie length:cookieSize];
+        printWithIndent(indent, "magicCookie = %s;\n", data.description.p);
+
+        const AudioChannelLayout *layout = CMAudioFormatDescriptionGetChannelLayout(formatDescription, NULL);
+        if (layout) {
+            printWithIndent(indent, "AudioChannelLayout = {\n");
+            indent++;
+            
+            printWithIndent(indent, "mChannelLayoutTag = ");
+            if (layout->mChannelLayoutTag == kAudioChannelLayoutTag_Mono) {
+                printf("kAudioChannelLayoutTag_Mono");
+            } else if (layout->mChannelLayoutTag == kAudioChannelLayoutTag_Stereo) {
+                printf("kAudioChannelLayoutTag_Stereo");
+            } else {
+                printf("(%d<<16) | %d", layout->mChannelLayoutTag >> 16, layout->mChannelLayoutTag & ((1<<16) - 1));
+            }
+            printf(";\n");
+            
+            printWithIndent(indent, "mChannelBitmap = 0x%08x;\n", layout->mChannelBitmap);
+            // printWithIndent(indent, "mNumberChannelDescriptions = %d;\n", layout->mNumberChannelDescriptions);
+            printWithIndent(indent, "mChannelDescriptions = [\n");
+            indent++;
+            
+            for (int i = 0; i < layout->mNumberChannelDescriptions; i++) {
+                printWithIndent(indent, "{\n");
+                indent++;
+                printWithIndent(indent, "mChannelLabel = %d;\n", layout->mChannelDescriptions[i].mChannelLabel);
+                printWithIndent(indent, "mChannelFlags = %x;\n", layout->mChannelDescriptions[i].mChannelFlags);
+                printWithIndent(indent, "mCoordinates = (%f, %f, %f);\n", layout->mChannelDescriptions[i].mCoordinates[0],
+                       layout->mChannelDescriptions[i].mCoordinates[1],
+                       layout->mChannelDescriptions[i].mCoordinates[2]);
+                indent--;
+                printWithIndent(indent, "};\n");
+            }
+            indent--;
+            printWithIndent(indent, "];\n");
+            indent--;
+            printWithIndent(indent, "};\n");
+        }
+        
+        // FormatList
+        // TODO: Not implemented yet
+    } else if (mediaType == kCMMediaType_Video) {
+        // Video-Specific Functions
+        printWithIndent(indent, "// Audio-Specific Functions\n");
+        CMVideoDimensions videoDimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
+        printWithIndent(indent, "videoDimensions = {\n");
+        printWithIndent(indent + 1, "width = %d;\n", videoDimensions.width);
+        printWithIndent(indent + 1, "height = %d;\n", videoDimensions.height);
+        printWithIndent(indent, "};\n");
+        
+        // CleanAperture
+        // TODO: Not implemented yet
+    } else if (mediaType == kCMMediaType_Muxed) {
+        // Muxed-Specific Functions
+        
+        // None
+    } else if (mediaType == kCMMediaType_Metadata) {
+        // Metadata-Specific Functions
+        printWithIndent(indent, "// Metadata-Specific Functions\n");
+
+        // The data available from CMMetadataFormatDescriptionGetKeyWithLocalID() is all duplicated in
+        // the MetadataKeyTable extension, so don't print it here.
+        // Plus, there is no way to enumerate all of the valid localKeyID values.
+    } else if (mediaType == kCMMediaType_Text) {
+        // Text-Specific Functions
+        // TODO: Not implemented yet
+    } else if (mediaType == kCMMediaType_TimeCode) {
+        // TimeCode-Specific Functions
+        printWithIndent(indent, "// TimeCode-Specific Functions\n");
+        
+        // FrameDuration
+        CMTime frameDuration = CMTimeCodeFormatDescriptionGetFrameDuration(formatDescription);
+        printWithIndent(indent, "frameDuration = {%lld/%d = %f};\n",
+               frameDuration.value, frameDuration.timescale, CMTimeGetSeconds(frameDuration));
+
+        // FrameQuanta
+        uint32_t frameQuanta = CMTimeCodeFormatDescriptionGetFrameQuanta(formatDescription);
+        printWithIndent(indent, "frameQuanta = %d;\n", frameQuanta);
+        
+        // TimeCodeFlags
+        uint32_t flags = CMTimeCodeFormatDescriptionGetTimeCodeFlags(formatDescription);
+        printWithIndent(indent, "timeCodeFlags = %d; //", flags);
+        if (flags & kCMTimeCodeFlag_DropFrame) {
+            printf(" kCMTimeCodeFlag_DropFrame");
+        }
+        if (flags & kCMTimeCodeFlag_24HourMax) {
+            printf(" kCMTimeCodeFlag_24HourMax");
+        }
+        if (flags & kCMTimeCodeFlag_NegTimesOK) {
+            printf(" kCMTimeCodeFlag_NegTimesOK");
+        }
+        printf("\n");
+    }
+    
+    printf("\n");
+    
+    // Extensions
+    printWithIndent(indent, "// Extensions\n");
+    NSDictionary *extensions = (__bridge NSDictionary *)(CMFormatDescriptionGetExtensions(formatDescription));
+    printWithIndent(indent, "extensions = "); printObject(indent, extensions); printf(";\n");
+    
+    indent--;
+    printWithIndent(indent, "},\n");
 }
 
 static void printAVMediaType(NSString *mediaType)
@@ -342,15 +461,85 @@ static void printCMMediaType(CMMediaType mediaType)
     }
 }
 
-static void printTransform(CGAffineTransform transform, const char *indent)
+static void printTransform(int indent, CGAffineTransform transform)
 {
     if (CGAffineTransformIsIdentity(transform)) {
         printf("CGAffineTransformIdentity;\n");
     } else {
         printf("{\n");
-        printf("%s    %f, %f, %f\n", indent, transform.a, transform.b, 0.0);
-        printf("%s    %f, %f, %f\n", indent, transform.c, transform.d, 0.0);
-        printf("%s    %f, %f, %f\n", indent, transform.tx, transform.ty, 1.0);
-        printf("%s};\n", indent);
+        printWithIndent(indent + 1, "%f, %f, %f\n", transform.a, transform.b, 0.0);
+        printWithIndent(indent + 1, "%f, %f, %f\n", transform.c, transform.d, 0.0);
+        printWithIndent(indent + 1, "%f, %f, %f\n", transform.tx, transform.ty, 1.0);
+        printWithIndent(indent, "};\n");
     }
+}
+
+static void printObject(int indent, NSObject *value) {
+    if (!value) {
+        printf("nil");
+    } else if ([value isKindOfClass:[NSNumber class]]) {
+        NSNumber *number = (NSNumber *)value;
+        
+        if ((__bridge CFBooleanRef)number == kCFBooleanTrue) {
+            printf("YES");
+        } else if ((__bridge CFBooleanRef)number == kCFBooleanFalse) {
+            printf("NO");
+        } else {
+            printf("%s", value.description.p);
+        }
+    } else if ([value isKindOfClass:[NSString class]] ) {
+        printf("%s", ((NSString *)value).q);
+    } else if ([value isKindOfClass:[NSData class]] ) {
+        // See if we can interpret the raw data as a UTF8 string.
+        NSString *dataString = [[NSString alloc] initWithData:((NSData *)value) encoding:NSUTF8StringEncoding];
+        
+        if (dataString && dataString.length > 0 && [dataString characterAtIndex:0] != '\0') {
+            dataString = [dataString stringByReplacingOccurrencesOfString:@"\0" withString:@"\\0"];
+            dataString = [dataString stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+            dataString = [dataString stringByReplacingOccurrencesOfString:@"\t" withString:@"\\t"];
+            dataString = [dataString stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+            
+            if (dataString.length > 0) {
+                printf("(NSData *)%s", dataString.q);
+            } else {
+                printf("%s", value.description.p);
+            }
+        } else {
+            printf("%s", value.description.p);
+            
+        }
+    } else if ([value isKindOfClass:[NSArray class]] ) {
+        NSArray *array = (NSArray *)value;
+        
+        printf("[\n");
+        for (int i = 0; i < array.count; i++) {
+            printWithIndent(indent + 1, ""); printObject(indent + 1, array[i]);
+             printf(",\n");
+        }
+        printWithIndent(indent, "]");
+    } else if ([value isKindOfClass:[NSDictionary class]] ) {
+        NSDictionary *dictionary = (NSDictionary *)value;
+        
+        printf("{\n");
+        for (NSString *key in [dictionary.allKeys sortedArrayUsingComparator: ^(id obj1, id obj2) {
+            return [(NSString *)obj1 compare:(NSString *)obj2];
+        }]) {
+            printWithIndent(indent + 1, "%s = ", key.q);
+            printObject(indent + 1, dictionary[key]);
+            printf(";\n");
+        }
+        printWithIndent(indent, "}");
+    } else {
+        printf("(%s *) %s", value.className.p, value.description.p);
+    }
+}
+
+static void printWithIndent(int indent, const char *format, ...)
+{
+    const int spacesToIndent = 4;
+    
+    va_list(args);
+    va_start(args, format);
+    printf("%*s", spacesToIndent * indent, "");
+    vprintf(format, args);
 }

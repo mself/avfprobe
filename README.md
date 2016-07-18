@@ -55,14 +55,14 @@ keySpace = "uiso";
 key = 1179210317;
 commonKey = (null);
 dataType = "com.apple.metadata.datatype.raw-data";
-value = <4844342e 30312e30 322e3030 2e3030>; // = "HD4.01.02.00.00"
+ value = (NSData *)"HD4.01.02.00.00";
 ```
 
 You can look up "HD4.01.02.00.00" on [GoPro's website](https://gopro.com/support/articles/firmware-release-information) to see that this is a "HERO4 Silver Edition Camera".
 
 ##### ffmpeg:
 
-`avfprobe` can also help troublshoot issues, such as this one in the sample output from `ffmpeg`.
+`avfprobe` can also help troublshoot issues, such as this one:
 
 ```
 // Temporal Properties
