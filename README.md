@@ -32,7 +32,7 @@ Please submit pull requests with sample output from other devices.
 
 ##### iPhone:
 
-The iPhone sample includes an example of a geographic location in the metadata:
+The iPhone sample includes an example of a geographic location in the asset metadata:
 
 ```
 identifier = "mdta/com.apple.quicktime.location.ISO6709";
@@ -45,6 +45,17 @@ value = "+37.4866-122.2296+005.952/";
 
 You can look up "+37.4866-122.2296+005.952/" on [Google Maps](https://www.google.com/maps/place/%2B37.4866-122.2296) to see where this video was shot.
 
+It also includes an example of face detection in one of the metadata tracks:
+
+```
+"MetadataKeyDataType" = (NSData *)"com.apple.quicktime.detected-face";
+"MetadataKeyValue" = (NSData *)"com.apple.quicktime.detected-face";
+"MetadataKeyValue" = (NSData *)"com.apple.quicktime.detected-face.face-id";
+"MetadataKeyValue" = (NSData *)"com.apple.quicktime.detected-face.bounds";
+"MetadataKeyValue" = (NSData *)"com.apple.quicktime.detected-face.roll-angle";
+"MetadataKeyValue" = (NSData *)"com.apple.quicktime.detected-face.yaw-angle";
+```
+
 ##### GoPro:
 
 The GoPro sample includes an example of the camera firmware version in the metadata:
@@ -55,7 +66,7 @@ keySpace = "uiso";
 key = 1179210317;
 commonKey = (null);
 dataType = "com.apple.metadata.datatype.raw-data";
- value = (NSData *)"HD4.01.02.00.00";
+value = (NSData *)"HD4.01.02.00.00";
 ```
 
 You can look up "HD4.01.02.00.00" on [GoPro's website](https://gopro.com/support/articles/firmware-release-information) to see that this is a "HERO4 Silver Edition Camera".

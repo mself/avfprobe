@@ -1,6 +1,6 @@
 {
     // Asset Properties
-    URL = "file:///Users/Matthew/Desktop/IO%20Test/short.MP4";
+    URL = <REDACTED>;
 
     // Determining Usability
     hasProtectedContent = NO;
