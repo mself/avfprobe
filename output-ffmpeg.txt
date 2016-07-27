@@ -22,15 +22,16 @@
     compatibleWithAirPlayVideo = YES;
     creationDate = {
         identifier = "common/creationDate";
-        keySpace = "comn";
-        key = "creationDate";
-        commonKey = "creationDate";
+        keySpace = AVMetadataKeySpaceCommon; // "comn"
+        key = AVMetadataCommonKeyCreationDate; // "creationDate"
+        commonKey = AVMetadataCommonKeyCreationDate; // "creationDate"
         dataType = (null);
         value = 2016-07-15 14:53:23 +0000;
         time = {0/0 = nan}; // sec
         duration = {0/0 = nan}; // sec
         locale = (null);
         extendedLanguageTag = (null);
+        extraAttributes = {};
     };
 
     // Tracks

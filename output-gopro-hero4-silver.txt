@@ -22,15 +22,16 @@
     compatibleWithAirPlayVideo = YES;
     creationDate = {
         identifier = "common/creationDate";
-        keySpace = "comn";
-        key = "creationDate";
-        commonKey = "creationDate";
+        keySpace = AVMetadataKeySpaceCommon; // "comn"
+        key = AVMetadataCommonKeyCreationDate; // "creationDate"
+        commonKey = AVMetadataCommonKeyCreationDate; // "creationDate"
         dataType = (null);
         value = 2015-02-28 12:16:11 +0000;
         time = {0/0 = nan}; // sec
         duration = {0/0 = nan}; // sec
         locale = (null);
         extendedLanguageTag = (null);
+        extraAttributes = {};
     };
 
     // Tracks
@@ -249,111 +250,147 @@
     metadata = [
         {
             identifier = "uiso/FIRM";
-            keySpace = "uiso";
-            key = 1179210317;
-            commonKey = (null);
+            keySpace = AVMetadataKeySpaceISOUserData; // "uiso"
+            key = 0x4649524d; // 'FIRM'
+            commonKey = nil;
             dataType = "com.apple.metadata.datatype.raw-data";
             value = (NSData *)"HD4.01.02.00.00";
             time = {0/0 = nan}; // sec
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
+            extraAttributes = {
+                "dataType" = 0;
+                "dataTypeNamespace" = "com.apple.quicktime.udta";
+            };
         },
         {
             identifier = "uiso/LENS";
-            keySpace = "uiso";
-            key = 1279610451;
-            commonKey = (null);
+            keySpace = AVMetadataKeySpaceISOUserData; // "uiso"
+            key = 0x4c454e53; // 'LENS'
+            commonKey = nil;
             dataType = "com.apple.metadata.datatype.raw-data";
             value = (NSData *)"LAT4121200214311\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
             time = {0/0 = nan}; // sec
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
+            extraAttributes = {
+                "dataType" = 0;
+                "dataTypeNamespace" = "com.apple.quicktime.udta";
+            };
         },
         {
             identifier = "uiso/CAME";
-            keySpace = "uiso";
-            key = 1128353093;
-            commonKey = (null);
+            keySpace = AVMetadataKeySpaceISOUserData; // "uiso"
+            key = 0x43414d45; // 'CAME'
+            commonKey = nil;
             dataType = "com.apple.metadata.datatype.raw-data";
             value = <99ff9129 90c9020c cee4b030 64b93f24>;
             time = {0/0 = nan}; // sec
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
+            extraAttributes = {
+                "dataType" = 0;
+                "dataTypeNamespace" = "com.apple.quicktime.udta";
+            };
         },
         {
             identifier = "uiso/SETT";
-            keySpace = "uiso";
-            key = 1397052500;
-            commonKey = (null);
+            keySpace = AVMetadataKeySpaceISOUserData; // "uiso"
+            key = 0x53455454; // 'SETT'
+            commonKey = nil;
             dataType = "com.apple.metadata.datatype.raw-data";
             value = <00000000 00004590 00000000>;
             time = {0/0 = nan}; // sec
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
+            extraAttributes = {
+                "dataType" = 0;
+                "dataTypeNamespace" = "com.apple.quicktime.udta";
+            };
         },
         {
             identifier = "uiso/AMBA";
-            keySpace = "uiso";
-            key = 1095582273;
-            commonKey = (null);
+            keySpace = AVMetadataKeySpaceISOUserData; // "uiso"
+            key = 0x414d4241; // 'AMBA'
+            commonKey = nil;
             dataType = "com.apple.metadata.datatype.raw-data";
             value = <00040003 01017800 00000002 00003aa7 000afc80 01c9c380 01c9c380 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 01090101>;
             time = {0/0 = nan}; // sec
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
+            extraAttributes = {
+                "dataType" = 0;
+                "dataTypeNamespace" = "com.apple.quicktime.udta";
+            };
         },
         {
             identifier = "uiso/MUID";
-            keySpace = "uiso";
-            key = 1297434948;
-            commonKey = (null);
+            keySpace = AVMetadataKeySpaceISOUserData; // "uiso"
+            key = 0x4d554944; // 'MUID'
+            commonKey = nil;
             dataType = "com.apple.metadata.datatype.raw-data";
             value = <99ff9129 90c9020c cee4b030 64b93f24 07df270c 00070415 08340000 00000000>;
             time = {0/0 = nan}; // sec
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
+            extraAttributes = {
+                "dataType" = 0;
+                "dataTypeNamespace" = "com.apple.quicktime.udta";
+            };
         },
         {
             identifier = "uiso/HMMT";
-            keySpace = "uiso";
-            key = 1213025620;
-            commonKey = (null);
+            keySpace = AVMetadataKeySpaceISOUserData; // "uiso"
+            key = 0x484d4d54; // 'HMMT'
+            commonKey = nil;
             dataType = "com.apple.metadata.datatype.raw-data";
             value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
             time = {0/0 = nan}; // sec
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
+            extraAttributes = {
+                "dataType" = 0;
+                "dataTypeNamespace" = "com.apple.quicktime.udta";
+            };
         },
         {
             identifier = "uiso/BCID";
-            keySpace = "uiso";
-            key = 1111705924;
-            commonKey = (null);
+            keySpace = AVMetadataKeySpaceISOUserData; // "uiso"
+            key = 0x42434944; // 'BCID'
+            commonKey = nil;
             dataType = "com.apple.metadata.datatype.raw-data";
             value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
             time = {0/0 = nan}; // sec
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
+            extraAttributes = {
+                "dataType" = 0;
+                "dataTypeNamespace" = "com.apple.quicktime.udta";
+            };
         },
         {
             identifier = "uiso/free";
-            keySpace = "uiso";
-            key = 1718773093;
-            commonKey = (null);
+            keySpace = AVMetadataKeySpaceISOUserData; // "uiso"
+            key = 0x66726565; // 'free'
+            commonKey = nil;
             dataType = "com.apple.metadata.datatype.raw-data";
             value = <00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000>;
             time = {0/0 = nan}; // sec
             duration = {0/0 = nan}; // sec
             locale = (null);
             extendedLanguageTag = (null);
+            extraAttributes = {
+                "dataType" = 0;
+                "dataTypeNamespace" = "com.apple.quicktime.udta";
+            };
         }
     ];
 

@@ -19,6 +19,8 @@ static void printObject(int indent, NSObject *value);
 static void printWithIndent(int indent, const char *format, ...);
 static void printTransform(int indent, CGAffineTransform transform);
 static void printAVMediaType(NSString *mediaType);
+static void printAVMetadataKeySpace(NSString *keySpace);
+static void printAVMetadataKey(int indent, NSObject *value);
 static void printFourCharCode(CMMediaType mediaType);
 
 int main(int argc, const char * argv[]) {
@@ -231,9 +233,9 @@ static void printMetadataItem(int indent, AVMetadataItem *item)
     
     // Keys and Key Spaces
     printWithIndent(indent, "identifier = %s;\n", item.identifier.q);
-    printWithIndent(indent, "keySpace = %s;\n", item.keySpace.q);
-    printWithIndent(indent, "key = "); printObject(indent, item.key); printf(";\n");
-    printWithIndent(indent, "commonKey = %s;\n", item.commonKey.q);
+    printWithIndent(indent, "keySpace = "); printAVMetadataKeySpace(item.keySpace);
+    printWithIndent(indent, "key = "); printAVMetadataKey(indent, item.key);
+    printWithIndent(indent, "commonKey = "); printAVMetadataKey(indent, item.commonKey);
     
     // Accessing Values
     printWithIndent(indent, "dataType = %s;\n", item.dataType.q);
@@ -244,6 +246,7 @@ static void printMetadataItem(int indent, AVMetadataItem *item)
                     CMTimeGetSeconds(item.duration));
     printWithIndent(indent, "locale = %s;\n", item.locale.localeIdentifier.q);
     printWithIndent(indent, "extendedLanguageTag = %s;\n", item.extendedLanguageTag.q);
+    printWithIndent(indent, "extraAttributes = "); printObject(indent, item.extraAttributes); printf(";\n");
     
     indent--;
     printWithIndent(indent, "}");
@@ -275,6 +278,8 @@ static void printFormatDescription(int indent, CMFormatDescriptionRef formatDesc
     if (mediaType == kCMMediaType_Audio) {
         // Audio-Specific Functions
         printWithIndent(indent, "// Audio-Specific Functions\n");
+        
+        // ASBD - Audio Stream Basic Description
         const AudioStreamBasicDescription *asbd = CMAudioFormatDescriptionGetStreamBasicDescription(formatDescription);
         if (asbd) {
             printWithIndent(indent, "AudioStreamBasicDescription = {\n");
@@ -293,43 +298,45 @@ static void printFormatDescription(int indent, CMFormatDescriptionRef formatDesc
             printWithIndent(indent, "};\n");
         }
         
+        // Magic Cookie
         size_t cookieSize = 0;
         const void *magicCookie = CMAudioFormatDescriptionGetMagicCookie(formatDescription, &cookieSize);
         NSData *data = [NSData dataWithBytes:magicCookie length:cookieSize];
         printWithIndent(indent, "magicCookie = "); printObject(indent, data); printf(";\n");
         
-        const AudioChannelLayout *layout = CMAudioFormatDescriptionGetChannelLayout(formatDescription, NULL);
-        if (layout) {
+        // ACL - Audio Channel Layout
+        const AudioChannelLayout *acl = CMAudioFormatDescriptionGetChannelLayout(formatDescription, NULL);
+        if (acl) {
             printWithIndent(indent, "AudioChannelLayout = {\n");
             indent++;
             
             printWithIndent(indent, "mChannelLayoutTag = ");
-            if (layout->mChannelLayoutTag == kAudioChannelLayoutTag_Mono) {
+            if (acl->mChannelLayoutTag == kAudioChannelLayoutTag_Mono) {
                 printf("kAudioChannelLayoutTag_Mono");
-            } else if (layout->mChannelLayoutTag == kAudioChannelLayoutTag_Stereo) {
+            } else if (acl->mChannelLayoutTag == kAudioChannelLayoutTag_Stereo) {
                 printf("kAudioChannelLayoutTag_Stereo");
             } else {
-                printf("(%d<<16) | %d", layout->mChannelLayoutTag >> 16, layout->mChannelLayoutTag & ((1<<16) - 1));
+                printf("(%d<<16) | %d", acl->mChannelLayoutTag >> 16, acl->mChannelLayoutTag & ((1<<16) - 1));
             }
             printf(";\n");
             
-            printWithIndent(indent, "mChannelBitmap = 0x%08x;\n", layout->mChannelBitmap);
+            printWithIndent(indent, "mChannelBitmap = 0x%08x;\n", acl->mChannelBitmap);
             
             // printWithIndent(indent, "mNumberChannelDescriptions = %d;\n", layout->mNumberChannelDescriptions);
-            if (layout->mNumberChannelDescriptions == 0) {
+            if (acl->mNumberChannelDescriptions == 0) {
                 printWithIndent(indent, "mChannelDescriptions = [];\n");
             } else {
                 printWithIndent(indent, "mChannelDescriptions = [\n");
                 indent++;
                 
-                for (int i = 0; i < layout->mNumberChannelDescriptions; i++) {
+                for (int i = 0; i < acl->mNumberChannelDescriptions; i++) {
                     printWithIndent(indent, "{\n");
                     indent++;
-                    printWithIndent(indent, "mChannelLabel = %d;\n", layout->mChannelDescriptions[i].mChannelLabel);
-                    printWithIndent(indent, "mChannelFlags = %x;\n", layout->mChannelDescriptions[i].mChannelFlags);
-                    printWithIndent(indent, "mCoordinates = (%f, %f, %f);\n", layout->mChannelDescriptions[i].mCoordinates[0],
-                                    layout->mChannelDescriptions[i].mCoordinates[1],
-                                    layout->mChannelDescriptions[i].mCoordinates[2]);
+                    printWithIndent(indent, "mChannelLabel = %d;\n", acl->mChannelDescriptions[i].mChannelLabel);
+                    printWithIndent(indent, "mChannelFlags = %x;\n", acl->mChannelDescriptions[i].mChannelFlags);
+                    printWithIndent(indent, "mCoordinates = (%f, %f, %f);\n", acl->mChannelDescriptions[i].mCoordinates[0],
+                                    acl->mChannelDescriptions[i].mCoordinates[1],
+                                    acl->mChannelDescriptions[i].mCoordinates[2]);
                     indent--;
                     printWithIndent(indent, "};\n");
                 }
@@ -514,7 +521,9 @@ static void printTransform(int indent, CGAffineTransform transform)
 
 static void printAVMediaType(NSString *mediaType)
 {
-    if ([mediaType isEqualToString:AVMediaTypeVideo]) {
+    if (!mediaType) {
+        printf("nil");
+    } else if ([mediaType isEqualToString:AVMediaTypeVideo]) {
         printf("AVMediaTypeVideo");
     } else if ([mediaType isEqualToString:AVMediaTypeAudio]) {
         printf("AVMediaTypeAudio");
@@ -532,6 +541,154 @@ static void printAVMediaType(NSString *mediaType)
         printf("AVMediaTypeMuxed");
     } else {
         printf("%s", mediaType.q);
+    }
+}
+
+static void printAVMetadataKeySpace(NSString *keySpace)
+{
+    if (!keySpace) {
+        printf("nil");
+    } else if ([keySpace isEqualToString:AVMetadataKeySpaceCommon]) {
+        printf("AVMetadataKeySpaceCommon");
+    } else if ([keySpace isEqualToString:AVMetadataKeySpaceQuickTimeUserData]) {
+        printf("AVMetadataKeySpaceQuickTimeUserData");
+    } else if ([keySpace isEqualToString:AVMetadataKeySpaceISOUserData]) {
+        printf("AVMetadataKeySpaceISOUserData");
+    } else if ([keySpace isEqualToString:AVMetadataKeySpaceQuickTimeMetadata]) {
+        printf("AVMetadataKeySpaceQuickTimeMetadata");
+    } else if ([keySpace isEqualToString:AVMetadataKeySpaceiTunes]) {
+        printf("AVMetadataKeySpaceiTunes");
+    } else if ([keySpace isEqualToString:AVMetadataKeySpaceID3]) {
+        printf("AVMetadataKeySpaceID3");
+    } else if ([keySpace isEqualToString:AVMetadataKeySpaceIcy]) {
+        printf("AVMetadataKeySpaceIcy");
+    } else {
+        printf("%s", keySpace.q);
+    }
+    
+    // Include a comment with the keySpace value.
+    printf("; // %s\n", keySpace.q);
+}
+
+static void printAVMetadataKey(int indent, NSObject *value)
+{
+    if (!value) {
+        printf("nil;\n");
+    } else if ([value isKindOfClass:[NSString class]] ) {
+        NSString *key = (NSString *)value;
+        
+        // Metadata common keys
+        if ([key isEqualToString:AVMetadataCommonKeyTitle]) {
+            printf("AVMetadataCommonKeyTitle");
+        } else if ([key isEqualToString:AVMetadataCommonKeyCreator]) {
+            printf("AVMetadataCommonKeyCreator");
+        } else if ([key isEqualToString:AVMetadataCommonKeySubject]) {
+            printf("AVMetadataCommonKeySubject");
+        } else if ([key isEqualToString:AVMetadataCommonKeyDescription]) {
+            printf("AVMetadataCommonKeyDescription");
+        } else if ([key isEqualToString:AVMetadataCommonKeyPublisher]) {
+            printf("AVMetadataCommonKeyPublisher");
+        } else if ([key isEqualToString:AVMetadataCommonKeyContributor]) {
+            printf("AVMetadataCommonKeyContributor");
+        } else if ([key isEqualToString:AVMetadataCommonKeyCreationDate]) {
+            printf("AVMetadataCommonKeyCreationDate");
+        } else if ([key isEqualToString:AVMetadataCommonKeyLastModifiedDate]) {
+            printf("AVMetadataCommonKeyLastModifiedDate");
+        } else if ([key isEqualToString:AVMetadataCommonKeyType]) {
+            printf("AVMetadataCommonKeyType");
+        } else if ([key isEqualToString:AVMetadataCommonKeyFormat]) {
+            printf("AVMetadataCommonKeyFormat");
+        } else if ([key isEqualToString:AVMetadataCommonKeyIdentifier]) {
+            printf("AVMetadataCommonKeyIdentifier");
+        } else if ([key isEqualToString:AVMetadataCommonKeySource]) {
+            printf("AVMetadataCommonKeySource");
+        } else if ([key isEqualToString:AVMetadataCommonKeyLanguage]) {
+            printf("AVMetadataCommonKeyLanguage");
+        } else if ([key isEqualToString:AVMetadataCommonKeyRelation]) {
+            printf("AVMetadataCommonKeyRelation");
+        } else if ([key isEqualToString:AVMetadataCommonKeyLocation]) {
+            printf("AVMetadataCommonKeyLocation");
+        } else if ([key isEqualToString:AVMetadataCommonKeyCopyrights]) {
+            printf("AVMetadataCommonKeyCopyrights");
+        } else if ([key isEqualToString:AVMetadataCommonKeyAlbumName]) {
+            printf("AVMetadataCommonKeyAlbumName");
+        } else if ([key isEqualToString:AVMetadataCommonKeyAuthor]) {
+            printf("AVMetadataCommonKeyAuthor");
+        } else if ([key isEqualToString:AVMetadataCommonKeyArtist]) {
+            printf("AVMetadataCommonKeyArtist");
+        } else if ([key isEqualToString:AVMetadataCommonKeyArtwork]) {
+            printf("AVMetadataCommonKeyArtwork");
+        } else if ([key isEqualToString:AVMetadataCommonKeyMake]) {
+            printf("AVMetadataCommonKeyMake");
+        } else if ([key isEqualToString:AVMetadataCommonKeyModel]) {
+            printf("AVMetadataCommonKeyModel");
+        } else if ([key isEqualToString:AVMetadataCommonKeySoftware]) {
+            printf("AVMetadataCommonKeySoftware");
+        }
+        
+        // QuickTimeMetadata keys
+        else if ([key isEqualToString:AVMetadataQuickTimeMetadataKeyLocationISO6709]) {
+            printf("AVMetadataQuickTimeMetadataKeyLocationISO6709");
+        } else if ([key isEqualToString:AVMetadataQuickTimeMetadataKeyMake]) {
+            printf("AVMetadataQuickTimeMetadataKeyMake");
+        } else if ([key isEqualToString:AVMetadataQuickTimeMetadataKeyModel]) {
+            printf("AVMetadataQuickTimeMetadataKeyModel");
+        } else if ([key isEqualToString:AVMetadataQuickTimeMetadataKeySoftware]) {
+            printf("AVMetadataQuickTimeMetadataKeySoftware");
+        } else if ([key isEqualToString:AVMetadataQuickTimeMetadataKeyCreationDate]) {
+            printf("AVMetadataQuickTimeMetadataKeyCreationDate");
+        }
+        
+        // ISO UserData keys (includes 3GPP keys)
+        else if ([key isEqualToString:AVMetadataISOUserDataKeyCopyright]) {
+            printf("AVMetadataISOUserDataKeyCopyright");
+        } else if ([key isEqualToString:AVMetadataISOUserDataKeyTaggedCharacteristic]) {
+            printf("AVMetadataISOUserDataKeyTaggedCharacteristic");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyCopyright]) {
+            printf("AVMetadata3GPUserDataKeyCopyright");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyAuthor]) {
+            printf("AVMetadata3GPUserDataKeyAuthor");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyPerformer]) {
+            printf("AVMetadata3GPUserDataKeyPerformer");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyGenre]) {
+            printf("AVMetadata3GPUserDataKeyGenre");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyRecordingYear]) {
+            printf("AVMetadata3GPUserDataKeyRecordingYear");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyLocation]) {
+            printf("AVMetadata3GPUserDataKeyLocation");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyTitle]) {
+            printf("AVMetadata3GPUserDataKeyTitle");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyDescription]) {
+            printf("AVMetadata3GPUserDataKeyDescription");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyCollection]) {
+            printf("AVMetadata3GPUserDataKeyCollection");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyUserRating]) {
+            printf("AVMetadata3GPUserDataKeyUserRating");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyThumbnail]) {
+            printf("AVMetadata3GPUserDataKeyThumbnail");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyAlbumAndTrack]) {
+            printf("AVMetadata3GPUserDataKeyAlbumAndTrack");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyKeywordList]) {
+            printf("AVMetadata3GPUserDataKeyKeywordList");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyMediaClassification]) {
+            printf("AVMetadata3GPUserDataKeyMediaClassification");
+        } else if ([key isEqualToString:AVMetadata3GPUserDataKeyMediaRating]) {
+            printf("AVMetadata3GPUserDataKeyMediaRating");
+        }
+        
+        // Other
+        else {
+            printf("%s", key.q);
+        }
+        
+        // Include a comment with the key value.
+        printf("; // %s\n", key.q);
+    } else if ([value isKindOfClass:[NSNumber class]]) {
+        NSNumber *number = (NSNumber *)value;
+        printf("0x%x; // %s\n", number.intValue, NSFileTypeForHFSTypeCode(number.intValue).p);
+    } else {
+        printObject(indent, value);
+        printf(";\n");
     }
 }
 
